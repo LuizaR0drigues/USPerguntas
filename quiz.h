@@ -1,3 +1,6 @@
+#ifndef QUIZ_H
+#define QUIZ_H
+
 #include <stdio.h>
 #include <iostream>
 #include <iomanip>
@@ -16,22 +19,29 @@ private:
     int _scoregeral;
 public:
     //construtor da classe jogador
-   Jogador(const std::string aux_id = "", const std::string aux_senha = "")
-   {
-        _id = aux_id;
-        _senha =  aux_senha;
-        _scoregeral = 0;
-        _scores = {};
-   };
-    //Verifica se as credenciais do jogador estao corretas
-    bool identificar_player(std::string nome, std::string senha){
-        if(_id.compare(nome) == 0  && _senha.compare(senha) == 0)
-            return true;
-        else 
-            return false;
-    };
+    Jogador(const std::string aux_id = "", const std::string aux_senha = "");
 
-    //operadores
+    //metodos e operadores
+    bool identificar_player(std::string nome, std::string senha);
+    friend bool operator>(const Jogador& player_A, const Jogador& player_B);
+    friend bool operator<(const Jogador& player_A, const Jogador& player_B);
+    friend bool operator==(const Jogador& player_A, const Jogador& player_B);
     
-    
+    //getters
+    int get_scoregeral() const;
+    std::string get_Id() const;
+
+    //setters
+    void set_scoregeral(const int pontuacao);
+    void set_id(const std::string id);
+
+    //destrutor
+   
 };
+
+
+
+
+
+
+#endif
