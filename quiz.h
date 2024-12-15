@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <fstream>
+#include <vector>
 
 //classe responsavel por identificar e armazenar informacoes sobre o jogador
 //tambem realizara a autentificacao
