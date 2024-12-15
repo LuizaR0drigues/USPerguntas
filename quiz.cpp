@@ -1,8 +1,10 @@
 #include "quiz.h"
+#include <regex>
+#include <vector>
 // CLASSE JOGADOR E SUAS FUNÇÔES
 // construtor
-/*
-Jogador::Jogador(const std::string aux_id = "", const std::string aux_senha = "")
+
+Jogador::Jogador(const std::string aux_id , const std::string aux_senha )
 {
     _id = aux_id;
     _senha = aux_senha;
@@ -58,12 +60,49 @@ void Jogador::set_id(const std::string id)
 {
     _id = id;
 }
-*/
-// CLASSE PERGUNTAS
 
+
+// CLASSE PERGUNTAS
+//construtor da classe perguntas
+Pergunta::Pergunta(const std::string& linhaCSV )
+{
+    _linha = linhaCSV;
+    _alternativa = {};
+    _resposta = "";
+}
+
+bool Pergunta::gerar_perguntas(std::string linhacsv)
+{
+    //usando o regex para encontrar as vrigulas do csv
+    std::regex item(R"([^,]+)");
+    std::smatch resultado;
+    std::vector<std::string> valores;
+
+    std::string aux_linha = linhacsv;
+
+    while(std::regex_search(aux_linha, resultado, item)){
+        valores.push_back(resultado.str(0));
+        aux_linha = resultado.suffix().str();
+    }
+
+    //verificação
+    if(valores.size() < 7){ //linha = pergunat, 4 alternativa, resposta, explicação
+        return false;
+    }
+
+    _linha = valores[0];
+
+    for(size_t i=0; i< 4; i++){
+        _alternativa[i]= valores[i+1];
+    }
+
+    _resposta = valores[5];
+    std::cout << _linha << _resposta << std::endl;
+    return true;
+
+}
 
 // CLASSE ArquivosCSV
-
 // Construtores e destrutores:
 ArquivosCSV::ArquivosCSV (std::string arqPerguntas, std::string arqJogadores){
     
@@ -146,5 +185,5 @@ int ArquivosCSV::fazerPerguntas(int N){
 
 free (numbers);
 free(noRepeat);
-
+return 0;
 }

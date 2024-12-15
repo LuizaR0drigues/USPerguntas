@@ -5,6 +5,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <array>
+#include <regex>
 #include <map>
 #include <fstream>
 
@@ -20,7 +22,7 @@ private:
     int _scoregeral;
 public:
     //construtor da classe jogador
-    Jogador(const std::string aux_id = "", const std::string aux_senha = "");
+    Jogador(const std::string aux_id, const std::string aux_senha );
 
     //metodos e operadores
     bool identificar_player(std::string nome, std::string senha);
@@ -40,9 +42,15 @@ public:
    
 };
 
-class Pergunta{
-
-int a;
+class Pergunta
+{
+private:
+    std::string _linha;
+    std::array <std::string, 4> _alternativa;
+    std::string _resposta;
+public:
+    Pergunta(const std::string& linhaCSV = "");
+    bool gerar_perguntas(std::string linhaCSV);
 
 };
 
@@ -64,10 +72,10 @@ public:
     // Destrutor da classe ArquivosCSV
     ~ArquivosCSV();
 
-    void setPerguntas(std::string arquivo);
-    void setJogadores(std::string arquivo);
+    //void setPerguntas(std::string arquivo);
+    //void setJogadores(std::string arquivo);
     int fazerPerguntas(int N);
-    bool adicionarJogador(std::string nome, std::string senha);
+    //bool adicionarJogador(std::string nome, std::string senha);
 
 };
 
