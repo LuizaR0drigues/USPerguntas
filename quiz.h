@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <string>
 #include <map>
+#include <fstream>
 
 //classe responsavel por identificar e armazenar informacoes sobre o jogador
 //tambem realizara a autentificacao
@@ -39,6 +40,36 @@ public:
    
 };
 
+class Pergunta{
+
+int a;
+
+};
+
+class ArquivosCSV{
+
+private:
+    std::fstream _perguntasCSV;
+    std::fstream _jogadoresCSV;
+    Pergunta _pergunta;
+
+public:
+
+    // Construtor da classe ArquivosCSV
+    ArquivosCSV(std::string arqPerguntas, std::string arqJogadores);
+    /* São inseridos os nomes dos dois arquivos, para que possam ser abertos e
+    manipulados pela classe, se não for necessário manipular um dos arquivos, 
+    deixar a string vazia */
+
+    // Destrutor da classe ArquivosCSV
+    ~ArquivosCSV();
+
+    void setPerguntas(std::string arquivo);
+    void setJogadores(std::string arquivo);
+    int fazerPerguntas(int N);
+    bool adicionarJogador(std::string nome, std::string senha);
+
+};
 
 
 

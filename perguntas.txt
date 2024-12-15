@@ -1,0 +1,11 @@
+Perguntas,Alternativa A ,Alternativa B ,Alternativa C,Alternativa D,Resposta Correta,Resposta manuscrita
+Qual é o valor de x na equação 3x−5=10?,5,3,7,15,C)5,"Resolva a equação: 3x−5=10 Adicione 5 em ambos os lados: 3x=15 Agora, divida ambos os lados por 3: x=5"
+Qual é a soma dos ângulos internos de um triângulo?,180,360,90,270,A)180,
+"Se f(x)=2x+1, qual é o valor de f(3)?",5,7,8,6,B)7,Substitua x=3 na função: f(3)=2(3)+1=6+1=7
+Qual é a solução da equação quadrática x2−4=0?,-2,2,-2 e 2,4,C)-2 e 2,Fórmula de Bhaskara
+Qual é o valor de log10​(100)?,2,10,100,1,A) 2,"log10​(100) é igual a 2, pois 102=100."
+O que é o valor de x na equação 5x+3=18?,3,2,5,4,B)3,"Resolva a equação: 5x+3=18 Subtraia 3 de ambos os lados: 5x=15 Agora, divida ambos os lados por 5: x=3"
+Qual é o perímetro de um quadrado com lado de comprimento 6 cm?,12 cm,18 cm,24 cm,30 cm,C) 24 cm,"O perímetro de um quadrado é dado por P=4×lado. Como o lado é 6 cm, temos: P=4×6=24cm"
+Qual é a área de um círculo com raio de 7 cm?,49pi cm²,14pi cm²,49 cm²,154 cm²,A)14pi cm²,"A área de um círculo é dada por A=πr2, onde r é o raio. Se r=7, então: A=π×72=49πcm2"
+"Qual é a equação da reta que passa pelos pontos (1,2) e (3,4)?",y = 2x -1,y = x+1,y = x+2,y = 2x,B) y = x+1,"A fórmula da equação da reta é y−y1​=m(x−x1​), onde m é a inclinação. A inclinação m é dada por: m=x2​−x1​y2​−y1​​=3−14−2​=1 Agora, usando o ponto (1,2), temos: y−2=1(x−1) y=x+1"
+Qual é o valor de 85​ em porcentagem?,50%,"62,50%",75%,80%,"B) 62,5%","Para converter uma fração em porcentagem, multiplique o numerador pela porcentagem e divida pelo denominador: 85​=0.625 Multiplicando por 100, temos: 0.625×100=62.5%"
