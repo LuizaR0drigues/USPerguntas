@@ -128,6 +128,7 @@ ArquivosCSV::~ArquivosCSV(){
 int ArquivosCSV::fazerPerguntas(int N){
     int n;
     std::string linha;
+    std::vector <std::streampos> posicoes;
 
     if (!_perguntasCSV.is_open()){
         printf("Nao foi possivel abrir o arquivo de perguntas");
@@ -138,7 +139,11 @@ int ArquivosCSV::fazerPerguntas(int N){
     int numPerguntas = 0;
     while (getline(_perguntasCSV, linha)){
         numPerguntas++;
+     //   std::cout << _perguntasCSV.tellg() << std::endl;
+        posicoes.push_back(_perguntasCSV.tellg());
     }
+
+    _perguntasCSV.clear(); 
 
     numPerguntas--;
     int num = numPerguntas;
@@ -178,10 +183,14 @@ int ArquivosCSV::fazerPerguntas(int N){
         numPerguntas--;
     }
 
-    /*
+    
     for (int i = 0; i <num ; i++){
-        std::cout << noRepeat[i] << std::endl;
-    } */
+        std::cout << noRepeat[i];
+        _perguntasCSV.seekg(posicoes[noRepeat[i]-1], _perguntasCSV.beg);
+        getline (_perguntasCSV, linha);
+        std::cout << ": " << linha << std::endl;
+    } 
+
 
 free (numbers);
 free(noRepeat);
