@@ -44,6 +44,14 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "*.txt": "cpp"
+        "*.txt": "cpp",
+        "bit": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "numbers": "cpp",
+        "ranges": "cpp",
+        "span": "cpp"
     }
 }

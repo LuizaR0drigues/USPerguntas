@@ -1,6 +1,5 @@
 #include "quiz.h"
-#include <regex>
-#include <vector>
+
 // CLASSE JOGADOR E SUAS FUNÇÔES
 // construtor
 
@@ -49,6 +48,11 @@ int Jogador::get_scoregeral() const
 std::string Jogador::get_Id() const
 {
     return _id;
+};
+
+std::string Jogador::get_Senha() const
+{
+    return _senha;
 };
 
 // setters
@@ -102,16 +106,26 @@ bool Pergunta::gerar_perguntas(std::string linhacsv)
 
 }
 
+
+
 // CLASSE ArquivosCSV
+
 // Construtores e destrutores:
 ArquivosCSV::ArquivosCSV (std::string arqPerguntas, std::string arqJogadores){
     
-    if(!arqPerguntas.empty())
-    _perguntasCSV.open(arqPerguntas);
+    _stringJogadores = arqJogadores;
+    _stringPerguntas = arqPerguntas;
+    
+    if (!arqPerguntas.empty()){
+        _perguntasCSV.open(arqPerguntas, std::ios_base::in);
+        //std::cout << "Aberto o arquivo de perguntas no construtor" << std::endl;
+    }
 
-    if(!arqJogadores.empty())
-        _jogadoresCSV.open(arqJogadores);
 
+    if (!arqJogadores.empty()){
+        _jogadoresCSV.open(arqJogadores, std::ios_base::in);
+        //std::cout << "Aberto o arquivo de jogadores no construtor" << std::endl;
+    }
 }
 
 ArquivosCSV::~ArquivosCSV(){
@@ -129,6 +143,13 @@ int ArquivosCSV::fazerPerguntas(int N){
     int n;
     std::string linha;
     std::vector <std::streampos> posicoes;
+
+    if(!_stringPerguntas.empty()){
+        if (_perguntasCSV.is_open()){
+            _perguntasCSV.close();
+        }
+        _perguntasCSV.open(_stringPerguntas, std::ios::in);
+    }
 
     if (!_perguntasCSV.is_open()){
         printf("Nao foi possivel abrir o arquivo de perguntas");
@@ -183,16 +204,61 @@ int ArquivosCSV::fazerPerguntas(int N){
         numPerguntas--;
     }
 
-    
+
+    int score = 0;
+
     for (int i = 0; i <num ; i++){
-        std::cout << noRepeat[i];
         _perguntasCSV.seekg(posicoes[noRepeat[i]-1], _perguntasCSV.beg);
         getline (_perguntasCSV, linha);
-        std::cout << ": " << linha << std::endl;
-    } 
+        //score += _pergunta.GerarPergunta();
 
+        //std::cout << noRepeat[i] << ": " << linha << std::endl;
+    } 
 
 free (numbers);
 free(noRepeat);
-return 0;
+
+return score;
+
+}
+
+bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha){
+
+    std::string nomeSalvo;
+  
+    if(!_stringJogadores.empty()){
+         //   std::cout << "Temos uma string de jogadores" << std::endl;
+        if (_jogadoresCSV.is_open()){
+            _jogadoresCSV.close();
+         //   std::cout << "Fechando o arquivo de jogadores que estava aberto" << std::endl;
+        }
+        _jogadoresCSV.open(_stringJogadores, std::ios::in);
+    }
+
+    if (!_jogadoresCSV.is_open()){
+        _jogadoresCSV.open(_stringJogadores, std::ios::out);
+    }
+
+    if (!_jogadoresCSV.is_open()){
+        //std::cout << "O arquivo de jogadores não pode ser aberto" << std::endl;
+        return false;
+    }
+
+    while (getline(_jogadoresCSV, nomeSalvo, ',')){
+        //std::cout << "("<< nomeSalvo << "=" << nome << ")" << std::endl;
+        if (nomeSalvo == nome){
+            std::cout << "Erro: Nome de jogador ja existe." << std::endl;
+            _jogadoresCSV.close();
+            return false;
+        }
+        getline(_jogadoresCSV,nomeSalvo);
+    }
+
+    _jogadoresCSV.close();
+
+    _jogadoresCSV.open(_stringJogadores, std::ios_base::out | std::ios_base::app);
+    _jogadoresCSV << nome << "," << senha << std::endl;
+
+    return true;
+
 }
