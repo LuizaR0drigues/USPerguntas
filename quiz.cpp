@@ -118,7 +118,35 @@ char Pergunta::get_resposta(){
     return _resposta;
 }
 
-bool Optativa::verifica_alternativa()
+std::string Pergunta::get_dissertativa(){
+    return _resposta_diss;
+}
+
+bool Pergunta::verifica_texto(){
+    std::cout <<"Escreva sua resposta  somente com letras minusculas e sem caracteres especias";
+    std::cout <<"A resposta correta é: \n";
+    std::string resposta_jogador;
+    std::string aux =std::string(1, get_resposta()); //tranformando em string
+
+    //requisitando a resposta do jagador
+    std::cin >> resposta_jogador;
+
+    //verificando a partir de substrings
+    std::string resposta_correta = get_dissertativa();
+
+    size_t pos = resposta_correta.find(resposta_jogador);
+
+    if(pos != std::string::npos){
+        std::cout << "RESPOSTA CORRETA! +1 ponto";
+        return true;
+    }  
+    else{
+        return false;
+    }
+
+}
+
+bool Pergunta::verifica_alternativa()
 {   
     //declaracao e requisicao da resposta do jogador 
     char escolha;
@@ -157,7 +185,6 @@ bool Optativa::verifica_alternativa()
     }
 
     return false;
-
 }
 
 

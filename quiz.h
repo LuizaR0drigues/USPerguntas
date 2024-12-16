@@ -51,31 +51,19 @@ private:
     std::string _linha;
     std::array <std::string, 4> _alternativa;
     std::string _explic;
-
+    std::string _resposta_diss; //resposta para o caso dissertativo
     char _resposta;
 public:
     Pergunta(const std::string& linhaCSV = "");
     bool gerar_perguntas(std::string linhaCSV);
-    bool verifica_perguntas(std::string& resposta);
+    bool verifica_texto();
+    bool verifica_alternativa();
     void imprime_perguntas();
-
     //getters
     char get_resposta();
-
-
-};
-
-//CLASSES DERIVADAS DE PERGUNTA
-class Dissertativa: private Pergunta{
-
-    public:
-    bool verifica_texto(std::string& resposta);
-};
-
-class Optativa: private Pergunta {
-
-    public:
-    bool verifica_alternativa();
+    std::string get_dissertativa();
+    
+    
 };
 
 class ArquivosCSV{
