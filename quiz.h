@@ -52,6 +52,9 @@ class ArquivosCSV{
 private:
     std::fstream _perguntasCSV;
     std::fstream _jogadoresCSV;
+    std::string _stringPerguntas;
+    std::string _stringJogadores;
+    
     Pergunta _pergunta;
 
 public:
