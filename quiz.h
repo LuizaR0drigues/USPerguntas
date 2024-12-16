@@ -93,11 +93,11 @@ public:
 };
 
 
-class Controlador : private Jogador, private Pergunta, private ArquivosCSV{
+class Jogo: private Jogador, private Pergunta, private ArquivosCSV{
     public:
 
     private:
-    void adiciona_pontos();
+    int fazerPerguntas(int n);
 
 };
 

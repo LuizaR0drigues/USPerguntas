@@ -304,16 +304,4 @@ return 0;
 }
 
 
-//Classe Controlador
-/*void Controlador::adiciona_pontos(){
-    int n = 2;
-    std::string linha = fazerPerguntas(n);
-
-    if(gerar_perguntas(linha))
-    {
-       if( verifica_alternativa()){
-            set_scoregeral(1);
-       }
-    }
-
-};*/
+//Classe Jogo
