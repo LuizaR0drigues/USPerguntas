@@ -40,7 +40,6 @@ public:
     void set_scoregeral(const int pontuacao);
     void set_id(const std::string id);
 
-    //destrutor
    
 };
 
@@ -58,7 +57,7 @@ public:
     bool gerar_perguntas(std::string linhaCSV);
     bool verifica_texto();
     bool verifica_alternativa();
-    void imprime_perguntas();
+
     //getters
     char get_resposta();
     std::string get_dissertativa();
@@ -94,7 +93,12 @@ public:
 };
 
 
+class Controlador : private Jogador, private Pergunta, private ArquivosCSV{
+    public:
 
+    private:
+    void adiciona_pontos();
 
+};
 
 #endif

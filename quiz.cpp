@@ -58,7 +58,7 @@ std::string Jogador::get_Senha() const
 // setters
 void Jogador::set_scoregeral(const int pontuacao)
 {
-    _scoregeral = pontuacao;
+    _scoregeral += pontuacao;
 }
 void Jogador::set_id(const std::string id)
 {
@@ -107,9 +107,12 @@ bool Pergunta::gerar_perguntas(std::string linhacsv)
     _resposta = aux_valores[5][0]; //pegando somente um caractere -> um char
     _explic = aux_valores[6];
 
-    //teste
-    std::cout << _linha << _resposta << std::endl;
 
+
+    //impressão de perguntas
+    std::cout << _linha << std::endl;
+    std::cout << "A)" << _alternativa[0] <<  "    " << "B)" << _alternativa[1] <<std::endl;
+    std::cout << "C)" << _alternativa[2] <<  "    " << "D)" << _alternativa[3] <<std::endl;
     return true;
 
 }
@@ -299,3 +302,18 @@ free (numbers);
 free(noRepeat);
 return 0;
 }
+
+
+//Classe Controlador
+/*void Controlador::adiciona_pontos(){
+    int n = 2;
+    std::string linha = fazerPerguntas(n);
+
+    if(gerar_perguntas(linha))
+    {
+       if( verifica_alternativa()){
+            set_scoregeral(1);
+       }
+    }
+
+};*/
