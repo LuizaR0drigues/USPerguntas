@@ -72,7 +72,7 @@ Pergunta::Pergunta(const std::string& linhaCSV )
 {
     _linha = linhaCSV;
     _alternativa = {};
-    _resposta = "";
+    _resposta = '0';
 }
 
 bool Pergunta::gerar_perguntas(std::string linhacsv)
@@ -80,32 +80,85 @@ bool Pergunta::gerar_perguntas(std::string linhacsv)
     //usando o regex para encontrar as vrigulas do csv
     std::regex item(R"([^,]+)");
     std::smatch resultado;
-    std::vector<std::string> valores;
+    std::vector<std::string> aux_valores;
 
     std::string aux_linha = linhacsv;
 
+    //percorre a linha, encontra a virgula, quebra a string e armazena no auxiliar linha
     while(std::regex_search(aux_linha, resultado, item)){
-        valores.push_back(resultado.str(0));
+        aux_valores.push_back(resultado.str(0));
         aux_linha = resultado.suffix().str();
     }
 
     //verificação
-    if(valores.size() < 7){ //linha = pergunat, 4 alternativa, resposta, explicação
+    if(aux_valores.size() < 7){ //linha = pergunat, 4 alternativa, resposta, explicação
         return false;
     }
 
-    _linha = valores[0];
+    //passa a pergunta para a linha
+    _linha = aux_valores[0];
 
+    //transferes as alternativas pro seu vetor
     for(size_t i=0; i< 4; i++){
-        _alternativa[i]= valores[i+1];
+        _alternativa[i]= aux_valores[i+1];
     }
 
-    _resposta = valores[5];
+    //transfere a resposta e explicacao para seus respectivos espacos
+    _resposta = aux_valores[5][0]; //pegando somente um caractere -> um char
+    _explic = aux_valores[6];
+
+    //teste
     std::cout << _linha << _resposta << std::endl;
+
     return true;
 
 }
 
+char Pergunta::get_resposta(){
+    return _resposta;
+}
+
+bool Optativa::verifica_alternativa()
+{   
+    //declaracao e requisicao da resposta do jogador 
+    char escolha;
+    std::cin >> escolha;
+
+    //verificao da alternativa correta
+    switch (escolha)
+    {
+    case 'A':
+        if(escolha == get_resposta())
+        {
+            std::cout << "PARABENS! RESPOSTA CORRETA! +1 ponto";
+        }
+        return true;
+    case 'B':
+        if(escolha == get_resposta())
+        {
+            std::cout << "PARABENS! RESPOSTA CORRETA! +1 ponto";
+        }
+        return true;
+    case 'C':
+        if(escolha == get_resposta())
+        {
+            std::cout << "PARABENS! RESPOSTA CORRETA! +1 ponto";
+        }
+        return true;
+    case 'D':
+        if(escolha == get_resposta())
+        {
+            std::cout << "PARABENS! RESPOSTA CORRETA! +1 ponto";
+        }
+        return true;
+    
+    default:
+        return false;
+    }
+
+    return false;
+
+}
 
 
 // CLASSE ArquivosCSV
