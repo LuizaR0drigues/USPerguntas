@@ -23,7 +23,7 @@ private:
     int _scoregeral;
 public:
     //construtor da classe jogador
-    Jogador(const std::string aux_id, const std::string aux_senha );
+    Jogador(const std::string aux_id = "", const std::string aux_senha = "");
 
     //metodos e operadores
     bool identificar_player(std::string nome, std::string senha);
@@ -34,6 +34,7 @@ public:
     //getters
     int get_scoregeral() const;
     std::string get_Id() const;
+    std::string get_Senha() const;
 
     //setters
     void set_scoregeral(const int pontuacao);
@@ -60,7 +61,9 @@ class ArquivosCSV{
 private:
     std::fstream _perguntasCSV;
     std::fstream _jogadoresCSV;
-    Pergunta _pergunta;
+    std::string _stringPerguntas;
+    std::string _stringJogadores;
+    
 
 public:
 
@@ -73,10 +76,10 @@ public:
     // Destrutor da classe ArquivosCSV
     ~ArquivosCSV();
 
-    //void setPerguntas(std::string arquivo);
-    //void setJogadores(std::string arquivo);
+    void setPerguntas(std::string arquivo);
+    void setJogadores(std::string arquivo);
     int fazerPerguntas(int N);
-    //bool adicionarJogador(std::string nome, std::string senha);
+    bool adicionarJogador(std::string nome, std::string senha);
 
 };
 
