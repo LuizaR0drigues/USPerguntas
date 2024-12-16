@@ -1,7 +1,7 @@
 #include "quiz.h"
 
 int main(){
-    ArquivosCSV arquivos("perguntas.csv","");
+    ArquivosCSV arquivos("perguntas.csv","jogadores.csv");
     arquivos.fazerPerguntas(10);
 
     Pergunta p;
