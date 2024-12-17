@@ -578,6 +578,7 @@ int Partida::fazerPerguntas(int N, int File){
         getPerguntasCSV().seekg(posicoes[noRepeat[i]-1], getPerguntasCSV().beg);
         getline (getPerguntasCSV(), linha);
         score += gerar_perguntas(linha);
+        verifica_alternativa();
 
         //std::cout << noRepeat[i] << ": " << linha << std::endl;
     } 
