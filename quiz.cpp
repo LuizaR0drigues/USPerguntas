@@ -329,7 +329,7 @@ bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha){
     while (getline(_jogadoresCSV, nomeSalvo, ',')){
         //std::cout << "("<< nomeSalvo << "=" << nome << ")" << std::endl;
         if (nomeSalvo == nome){
-            std::cout << "Erro: Nome de jogador ja existe." << std::endl;
+            std::cout << "Erro: Nome de jogador ja existe. Tente outro nome..." << std::endl;
             _jogadoresCSV.close();
             return false;
         }
@@ -461,6 +461,68 @@ bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int sc
     }
 
     return false;
+
+}
+
+Jogo::Jogo() : _arquivo("", "jogadores.csv"){
+
+}
+
+void Jogo::descricaoInicial(){
+
+    std::cout << " *******************************************************\n";
+    std::cout << "                         USPerguntas             \n";
+    std::cout << " ********************************************************\n";
+
+    std::cout << "O USPergunta é um jogo baseado no Jogo do Milhão, porém voltado para alunos do ensino médio\n";
+    std::cout << "Há questões de 4 áreas do conhecimento e 2 níveis de dificuldades: \n"
+              << " *mat_facil - mat_dificil\n"
+              << " *humanas_facil - humanas_dificil\n"
+              << " *bio_facil - bio_dificil\n"
+              << " *lp_facil - lp_dificil\n" << std::endl;
+
+}
+
+int Jogo::menu(){
+
+    std::string sOpcao;
+
+    std::cout << " *******************************************************\n";
+    std::cout << "                         Menu             \n";
+    std::cout << " ********************************************************\n";
+
+    std::cout << "Deseja:\n" <<
+    "1) Criar seu usuario.\n"<<
+    "2) Inicia partida (deve ter criado um usuário).\n"<<
+    "3) Ver o ranking.\n"<<
+    "4) Sair do jogo.\n";
+
+    std::cin >> sOpcao;
+
+    while (sOpcao.size()>1 || std::stoi(sOpcao) > 4 || std::stoi(sOpcao) < 1){
+    std::cout << "A opcao digitada é invalida, digite um numero entre 1 e 4.\n";
+    std::cin >> sOpcao;
+    }
+
+    return std::stoi(sOpcao);
+} 
+
+void Jogo::criarUsuario(){
+
+std::string nick, senha;
+
+std::cout << " *******************************************************\n";
+std::cout << "                      Crie sua conta:                   \n";
+std::cout << " ********************************************************\n";
+
+std::cout << "Digite abaixo o seu Nick: \n";
+std::cin >> nick;
+std::cout << "Digite sua senha: \n";
+std::cin >> senha;
+
+std::cout << std::endl;
+
+while(_arquivo.adicionarJogador(nick, senha) == false);
 
 }
 

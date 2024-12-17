@@ -97,12 +97,26 @@ public:
 };
 
 
-class Jogo: private Jogador, private Pergunta, private ArquivosCSV{
-    public:
+class Partida: private Jogador, private Pergunta, private ArquivosCSV{
 
     private:
-    int fazerPerguntas(int n);
 
+    public:
+    int fazerPerguntas(int n);
+    
+
+};
+
+class Jogo {
+    private:
+        std::string _nick, _senha;
+        ArquivosCSV _arquivo;
+
+    public:
+        void descricaoInicial();
+        void criarUsuario();
+        int menu();
+        Jogo();
 };
 
 #endif

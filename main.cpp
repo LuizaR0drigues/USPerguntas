@@ -9,27 +9,38 @@ int main(){/*
 
     p.gerar_perguntas(texto);*/
 
-    ArquivosCSV arquivos("perguntas.csv","jogadores.csv");
+    Jogo jogo;
+
+    jogo.descricaoInicial();
+    int caso = jogo.menu();
 
     std::string nick, senha, area;
 
-    std::cout << " *******************************************************\n";
-    std::cout << "                         USPerguntas             \n";
-    std::cout << " ********************************************************\n";
+    while (1){
+        switch (caso){
+            case 1:
+            jogo.criarUsuario();
+            jogo.menu();
+            break;
 
-    std::cout << " O USPergunta é um jogo baseado no Jogo do Milhão, porém voltado para alunos do ensino médio\n";
-    std::cout << "Há questões de 4 áreas do conhecimento e 2 níveis de dificuldades: \n"
-              << " *mat_facil - mat_dificil\n"
-              << " *humanas_facil - humanas_dificil\n"
-              << " *bio_facil - bio_dificil\n"
-              << " *lp_facil - lp_dificil\n"
-              << "Digite abaixo o seu Nick: \n";
-    std::cin >> nick;
-    std::cout << "Senha: \n";
-    std::cin >> senha;
+            case 2:
 
-    arquivos.adicionarJogador(nick, senha);
-    arquivos.alterarJogador(nick, "mat_facil", 10);
+            jogo.menu();
+            break;
+
+            case 3:
+
+            jogo.menu();
+            break;
+
+            case 4:
+            return 0;
+        }
+    }
+
+
+   // arquivos.adicionarJogador(nick, senha);
+    //arquivos.alterarJogador(nick, "mat_facil", 10);
 
     /*
     while (true) {
