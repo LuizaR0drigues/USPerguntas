@@ -8,6 +8,9 @@ int main(){/*
     std::string texto = "Qual é o valor de x na equação 3x−5=10?,5,3,7,15,C)5,Resolva a equação: 3x−5=10 Adicione 5 em ambos os lados: 3x=15 Agora, divida ambos os lados por 3: x=5";
 
     p.gerar_perguntas(texto);*/
+
+    ArquivosCSV arquivos("perguntas.csv","jogadores.csv");
+
     std::string nick, senha, area;
 
     std::cout << " *******************************************************\n";
@@ -25,6 +28,10 @@ int main(){/*
     std::cout << "Senha: \n";
     std::cin >> senha;
 
+    arquivos.adicionarJogador(nick, senha);
+    arquivos.alterarJogador(nick, "mat_facil", 10);
+
+    /*
     while (true) {
         std::cout << "\nDigite qual área/nível você gostaria, seguindo o padrão area_dificuldade (ou digite X para sair): \n";
         std::cin >> area;
@@ -51,7 +58,7 @@ int main(){/*
         } else {
             std::cout << "Área/dificuldade não reconhecida. Por favor, verifique o padrão e tente novamente!\n";
         }
-    }
+    } */
 
     return 0;
 }

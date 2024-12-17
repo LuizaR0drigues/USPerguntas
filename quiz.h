@@ -89,6 +89,10 @@ public:
     void setJogadores(std::string arquivo);
     int fazerPerguntas(int N);
     bool adicionarJogador(std::string nome, std::string senha);
+    bool alterarJogador(std::string nome, std::string scoreType, int score);
+    /* Essa função altera o score "scoreType" do jogador dado por "nome", no
+    caso em que o score fornecido é maior que o atual */
+    
 
 };
 
