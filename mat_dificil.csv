@@ -1,11 +1,10 @@
-Perguntas,Alternativa A,Alternativa B,Alternativa C,Alternativa D,Resposta Correta,Resposta Escrita,Explicação
-"Resolva: 2x + 4 = 12",x = 3,x = 4,x = 5,x = 6,B,"x = 4","Subtraímos 4: 2x = 8, depois dividimos por 2: x = 4."
-"Qual é a integral de ∫ x dx?",x² + C,2x + C,x + C,x³ + C,A,"x² + C","A integral de x em relação a x é x²/2 + constante C."
-"Quantas faces tem um cubo?",4,6,8,12,B,"6","Um cubo tem 6 faces quadradas."
-"Qual é o valor de 3³?",6,9,27,33,C,"27","3³ significa 3 x 3 x 3 = 27."
-"Resolva a equação: √x = 5",x = 10,x = 15,x = 25,x = 30,C,"x = 25","Elevamos os dois lados ao quadrado: x = 5² = 25."
-"Qual é o determinante da matriz 2x2 com valores 1, 2, 3 e 4?",-2,0,1,2,A,"-2","Determinante: (1x4) - (2x3) = -2."
-"Resolva: 4x - 3 = 13",x = 4,x = 5,x = 6,x = 7,B,"x = 4","Somamos 3: 4x = 16, depois dividimos por 4: x = 4."
-"Quanto é log₁₀(1000)?",1,2,3,4,C,"3","Logaritmo base 10 de 1000 é 3, pois 10³ = 1000."
-"Qual é a derivada de f(x) = x²?",x,x²,2x,1,C,"2x","A derivada de x² é 2x."
-"Quantos graus tem um triângulo equilátero?",60,90,120,180,B,"60","Cada ângulo em um triângulo equilátero tem 60°."
+Se 2x + 4 = 12, qual é o valor de x?;x = 3;x = 4;x = 5;x = 6;B;4;Subtraímos 4: 2x = 8, depois dividimos por 2: x = 4.
+Qual é a integral de ∫ x dx?;x² + C;2x + C;x + C;x³ + C;A;x² + C;A integral de x em relação a x é x²/2 + constante C.
+Quantas faces tem um cubo?;4;6;8;12;B;6;Um cubo tem 6 faces quadradas.
+Qual é o valor de 3³?;6;9;27;33;C;27;3³ significa 3 x 3 x 3 = 27.
+Resolva a equação: √x = 5;x = 10;x = 15;x = 25;x = 30;C;25;Elevamos os dois lados ao quadrado: x = 5² = 25.
+Qual é o determinante da matriz 2x2 com valores ((1, 2), (3, 4))?;-2;0;1;2;A;-2;Determinante: (1x4) - (2x3) = -2.
+Resolva: 4x - 3 = 13;x = 4;x = 5;x = 6;x = 7;B;4;Somamos 3: 4x = 16, depois dividimos por 4: x = 4.
+Quanto é log₁₀(1000)?;1;2;3;4;C;3;Logaritmo base 10 de 1000 é 3, pois 10³ = 1000.
+Qual é a derivada de f(x) = x²?;x;x²;2x;1;C;2x;A derivada de x² é 2x.
+Quantos graus tem um triângulo equilátero?;60;90;120;180;B;60;Cada ângulo em um triângulo equilátero tem 60°.

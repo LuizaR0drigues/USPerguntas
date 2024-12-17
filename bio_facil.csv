@@ -1,11 +1,10 @@
-Perguntas,Alternativa A,Alternativa B,Alternativa C,Alternativa D,Resposta Correta,Resposta Escrita,Explicação
-"Qual é a unidade básica da vida?",Tecido,Órgão,Célula,Sistema,C,"Célula","A célula é a unidade básica da vida."
-"Quem descobriu a penicilina?",Darwin,Mendel,Fleming,Lamarck,C,"Fleming","Alexander Fleming descobriu a penicilina."
-"Qual gás as plantas absorvem?",Oxigênio,Hidrogênio,Carbono,Gás Metano,C,"Carbono","Plantas absorvem CO2 para fotossíntese."
-"Qual é a função dos cloroplastos?",Respiração,Produção de energia,Fotossíntese,Armazenamento,C,"Fotossíntese","Cloroplastos realizam fotossíntese."
-"O que é um herbívoro?",Come plantas,Come carne,Come tudo,Produz energia,A,"Come plantas","Herbívoros alimentam-se de plantas."
-"Quem formulou a teoria da evolução?",Newton,Mendel,Darwin,Lamarck,C,"Darwin","Darwin formulou a teoria da evolução."
-"Qual órgão bombeia o sangue?",Pulmão,Fígado,Coração,Rins,C,"Coração","O coração bombeia o sangue no corpo."
-"Quantos cromossomos humanos existem?",23,46,50,92,B,"46","Os humanos têm 23 pares de cromossomos, totalizando 46."
-"Qual o nome do hormônio do crescimento?",Insulina,Adrenalina,GH,Melatonina,C,"GH","GH é o hormônio do crescimento."
-"O que é o DNA?",Proteína,Ácido Nucleico,Lipídio,Carboidrato,B,"Ácido Nucleico","O DNA é um ácido nucleico que armazena informações genéticas."
+Qual é a unidade básica da vida?;Tecido;Órgão;Célula;Sistema;C;Célula;A célula é a unidade básica da vida.
+Quem descobriu a penicilina?;Darwin;Mendel;Fleming;Lamarck;C;Fleming;Alexander Fleming descobriu a penicilina.
+Qual gás as plantas absorvem?;Oxigênio;Hidrogênio;Carbono;Gás Metano;C;Carbono;Plantas absorvem CO2 para fotossíntese.
+Qual é a função dos cloroplastos?;Respiração;Produção de energia;Fotossíntese;Armazenamento;C;Fotossíntese;Cloroplastos realizam fotossíntese.
+O que é um herbívoro?;Come plantas;Come carne;Come tudo;Produz energia;A;Come plantas;Herbívoros alimentam-se de plantas.
+Quem formulou a teoria da evolução?;Newton;Mendel;Darwin;Lamarck;C;Darwin;Darwin formulou a teoria da evolução.
+Qual órgão bombeia o sangue?;Pulmão;Fígado;Coração;Rins;C;Coração;O coração bombeia o sangue no corpo.
+Quantos cromossomos humanos existem?;23;46;50;92;B;46;Os humanos têm 23 pares de cromossomos; totalizando 46.
+Qual o nome do hormônio do crescimento?;Insulina;Adrenalina;GH;Melatonina;C;GH;GH é o hormônio do crescimento.
+O que é o DNA?;Proteína;Ácido Nucleico;Lipídio;Carboidrato;B;Ácido Nucleico;O DNA é um ácido nucleico que armazena informações genéticas.
