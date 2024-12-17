@@ -15,22 +15,25 @@ int main(){/*
     int caso = jogo.menu();
 
     std::string nick, senha, area;
+    int cntPartidas = 0;
+
 
     while (1){
         switch (caso){
             case 1:
             jogo.criarUsuario();
-            jogo.menu();
+            caso = jogo.menu();
             break;
 
             case 2:
 
-            jogo.menu();
+            jogo.iniciarPartida(cntPartidas);
+            caso = jogo.menu();
             break;
 
             case 3:
 
-            jogo.menu();
+            caso = jogo.menu();
             break;
 
             case 4:

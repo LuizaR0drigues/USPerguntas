@@ -464,6 +464,9 @@ bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int sc
 
 }
 
+// Classe partida
+
+// Classe jogo
 Jogo::Jogo() : _arquivo("", "jogadores.csv"){
 
 }
@@ -522,8 +525,43 @@ std::cin >> senha;
 
 std::cout << std::endl;
 
-while(_arquivo.adicionarJogador(nick, senha) == false);
+while(_arquivo.adicionarJogador(nick, senha) == false){
+
+std::cout << "Digite abaixo o seu Nick: \n";
+std::cin >> nick;
+std::cout << "Digite sua senha: \n";
+std::cin >> senha;
 
 }
 
+}
+
+int Jogo::iniciarPartida( int cnt){
+
+std::string area;
+
+std::cout << " *******************************************************\n";
+std::cout << "                      Partida" << cnt << " \n";
+std::cout << " ********************************************************\n";
+
+std::cout << "Deseja iniciar qual tipo de partida?: \n" <<
+    "1) Matematica (facil).\n"<<
+    "2) Matematica (dificil).\n"<<
+    "3) Humanas (facil).\n" <<
+    "4) Humanas (dificil).\n"<<
+    "5) Biologia (facil)\n" <<
+    "6) Biologia (dificil).\n"<<
+    "7) Lingua Portuguesa (facil).\n" <<
+    "8) Lingua Portuguesa (dificil). \n" << std::endl;
+
+std::cin >> area;
+
+while (area.size()>1 || std::stoi(area) > 8 || std::stoi(area) < 1){
+    std::cout << "A opcao digitada é invalida, digite um numero entre 1 e 8.\n";
+    std::cin >> area;
+}
+
+return std::stoi(area);
+
+}
 //Classe Jogo

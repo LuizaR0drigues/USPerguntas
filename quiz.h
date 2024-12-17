@@ -115,6 +115,7 @@ class Jogo {
     public:
         void descricaoInicial();
         void criarUsuario();
+        int iniciarPartida(int cntPartida);
         int menu();
         Jogo();
 };
