@@ -303,7 +303,8 @@ free(noRepeat);
 return 0;
 }
 
-int ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int score){
+bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int score){
+
 
 }
 
