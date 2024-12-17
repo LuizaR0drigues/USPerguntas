@@ -195,6 +195,12 @@ bool Pergunta::verifica_alternativa()
 // CLASSE ArquivosCSV
 
 // Construtores e destrutores:
+
+ArquivosCSV::ArquivosCSV (){
+    _stringJogadores = "";
+    _stringPerguntas = "";
+}
+
 ArquivosCSV::ArquivosCSV (std::string arqPerguntas, std::string arqJogadores){
     
     _stringJogadores = arqJogadores;
@@ -223,6 +229,7 @@ ArquivosCSV::~ArquivosCSV(){
     }
 }
 
+/*
 int ArquivosCSV::fazerPerguntas(int N){
     int n;
     std::string linha;
@@ -302,7 +309,7 @@ int ArquivosCSV::fazerPerguntas(int N){
 free (numbers);
 free(noRepeat);
 return 0;
-}
+} */
 
 bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha){
 
@@ -465,6 +472,120 @@ bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int sc
 }
 
 // Classe partida
+
+void Partida::setFile(int N) {
+    switch (N){
+        case 1:
+            setStringPerguntas("mat_facil.csv");
+            break;
+        case 2:
+            setStringPerguntas("mat_dificil.csv");
+            break;
+        case 3:
+            setStringPerguntas("humanas_facil.csv");
+            break;
+        case 4:
+            setStringPerguntas("humanas_dificil.csv");
+            break;
+        case 5:
+            setStringPerguntas("bio_facil.csv");
+            break;
+        case 6:
+            setStringPerguntas("bio_dificil.csv");
+            break;
+        case 7:
+            setStringPerguntas("lp_facil.csv");
+            break;
+        case 8:
+            setStringPerguntas("lp_dificil.csv");
+            break;
+    }
+
+    setStringJogadores("jogadores.csv");
+}
+
+int Partida::fazerPerguntas(int N, int File){
+    int n;
+
+    setFile(File);
+    std::string linha;
+    std::vector <std::streampos> posicoes;
+
+    if(!getStringPerguntas().empty()){
+        if (getPerguntasCSV().is_open()){
+            getPerguntasCSV().close();
+        }
+        getPerguntasCSV().open(getStringPerguntas(), std::ios::in);
+    }
+
+    if (!getPerguntasCSV().is_open()){
+        printf("Nao foi possivel abrir o arquivo de perguntas");
+        return 1;
+    }
+
+    // Descobrir quantas perguntas tem no arquivo
+    int numPerguntas = 0;
+    while (getline(getPerguntasCSV(), linha)){
+        numPerguntas++;
+     //   std::cout << getPerguntasCSV().tellg() << std::endl;
+        posicoes.push_back(getPerguntasCSV().tellg());
+    }
+
+    getPerguntasCSV().clear(); 
+
+    numPerguntas--;
+    int num = numPerguntas;
+
+    // Gerar os indexadores para as perguntas aleatórias:
+
+    if ((numPerguntas) < N){
+        printf ("ERROR: Number of integers in the interval is lesser than the"
+         "range of the interval.");
+        return -1;
+    }
+
+    int* numbers = (int*) malloc(sizeof(int) * (numPerguntas));
+    int* noRepeat = (int*) malloc(sizeof(int) * (N));
+
+    if (numbers == NULL || noRepeat == NULL){
+        printf ("ERROR: Unable to allocate space for integer vectors");
+    };
+
+    for (int i = 0; i < numPerguntas; i++) {
+        numbers[i] = i+1;
+    }
+
+    int randN;
+
+    for (int i = 0; i < N; i++) {
+
+        if (numPerguntas == 1){
+            noRepeat[i] = numbers[0];
+            continue;
+        }
+
+        randN = rand() % numPerguntas;
+
+        noRepeat[i] = numbers[randN];
+        numbers[randN] = numbers[numPerguntas-1];
+        numPerguntas--;
+    }
+
+
+    int score = 0;
+
+    for (int i = 0; i <num ; i++){
+        getPerguntasCSV().seekg(posicoes[noRepeat[i]-1], getPerguntasCSV().beg);
+        getline (getPerguntasCSV(), linha);
+        score += gerar_perguntas(linha);
+
+        //std::cout << noRepeat[i] << ": " << linha << std::endl;
+    } 
+
+free (numbers);
+free(noRepeat);
+return score;
+}
 
 // Classe jogo
 Jogo::Jogo() : _arquivo("", "jogadores.csv"){

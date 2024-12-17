@@ -1,0 +1,8 @@
+    "1) Matematica (facil).\n"<<
+    "2) Matematica (dificil).\n"<<
+    "3) Humanas (facil).\n" <<
+    "4) Humanas (dificil).\n"<<
+    "5) Biologia (facil)\n" <<
+    "6) Biologia (dificil).\n"<<
+    "7) Lingua Portuguesa (facil).\n" <<
+    "8) Lingua Portuguesa (dificil). \n" << std::endl;

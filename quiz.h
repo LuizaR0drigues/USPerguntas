@@ -76,34 +76,61 @@ private:
 
 public:
 
-    // Construtor da classe ArquivosCSV
+    // Construtores da classe ArquivosCSV
     ArquivosCSV(std::string arqPerguntas, std::string arqJogadores);
     /* São inseridos os nomes dos dois arquivos, para que possam ser abertos e
     manipulados pela classe, se não for necessário manipular um dos arquivos, 
     deixar a string vazia */
+
+    ArquivosCSV();
+    /* Nesse construtor, ambas as strings são inicializadas vazias*/
 
     // Destrutor da classe ArquivosCSV
     ~ArquivosCSV();
 
     void setPerguntas(std::string arquivo);
     void setJogadores(std::string arquivo);
-    int fazerPerguntas(int N);
+    //int fazerPerguntas(int N);
     bool adicionarJogador(std::string nome, std::string senha);
     bool alterarJogador(std::string nome, std::string scoreType, int score);
     /* Essa função altera o score "scoreType" do jogador dado por "nome", no
     caso em que o score fornecido é maior que o atual */
     
+    // Getters:
+    std::fstream& getPerguntasCSV() {
+        return _perguntasCSV;
+    }
+
+    std::fstream& getJogadoresCSV() {
+        return _jogadoresCSV;
+    }
+
+    const std::string& getStringPerguntas() const {
+        return _stringPerguntas;
+    }
+
+    const std::string& getStringJogadores() const {
+        return _stringJogadores;
+    }
+
+    void setStringPerguntas(const std::string& stringPerguntas) {
+        _stringPerguntas = stringPerguntas;
+    }
+
+    void setStringJogadores(const std::string& stringJogadores) {
+        _stringJogadores = stringJogadores;
+    }
+    // Setters:
 
 };
 
 
-class Partida: private Jogador, private Pergunta, private ArquivosCSV{
-
+class Partida: private Jogador, private Pergunta, public ArquivosCSV{
     private:
 
     public:
-    int fazerPerguntas(int n);
-    
+    int fazerPerguntas(int n, int File);
+    void setFile(int N);
 
 };
 

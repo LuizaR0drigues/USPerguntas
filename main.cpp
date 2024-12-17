@@ -10,11 +10,12 @@ int main(){/*
     p.gerar_perguntas(texto);*/
 
     Jogo jogo;
+    Partida partida;
 
     jogo.descricaoInicial();
     int caso = jogo.menu();
 
-    std::string nick, senha, area;
+    int area;
     int cntPartidas = 0;
 
 
@@ -26,8 +27,10 @@ int main(){/*
             break;
 
             case 2:
+            area = jogo.iniciarPartida(cntPartidas);
+            partida.setFile(area);
+            partida.fazerPerguntas(5, area);
 
-            jogo.iniciarPartida(cntPartidas);
             caso = jogo.menu();
             break;
 
