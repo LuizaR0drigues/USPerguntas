@@ -303,8 +303,44 @@ free(noRepeat);
 return 0;
 }
 
-bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int score){
+bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha){
 
+    std::string nomeSalvo;
+  
+    if(!_stringJogadores.empty()){
+         //   std::cout << "Temos uma string de jogadores" << std::endl;
+        if (_jogadoresCSV.is_open()){
+            _jogadoresCSV.close();
+         //   std::cout << "Fechando o arquivo de jogadores que estava aberto" << std::endl;
+        }
+        _jogadoresCSV.open(_stringJogadores, std::ios::in);
+    }
+
+    if (!_jogadoresCSV.is_open()){
+        _jogadoresCSV.open(_stringJogadores, std::ios::out);
+    }
+
+    if (!_jogadoresCSV.is_open()){
+        //std::cout << "O arquivo de jogadores não pode ser aberto" << std::endl;
+        return false;
+    }
+
+    while (getline(_jogadoresCSV, nomeSalvo, ',')){
+        //std::cout << "("<< nomeSalvo << "=" << nome << ")" << std::endl;
+        if (nomeSalvo == nome){
+            std::cout << "Erro: Nome de jogador ja existe." << std::endl;
+            _jogadoresCSV.close();
+            return false;
+        }
+        getline(_jogadoresCSV,nomeSalvo);
+    }
+
+    _jogadoresCSV.close();
+
+    _jogadoresCSV.open(_stringJogadores, std::ios_base::out | std::ios_base::app);
+    _jogadoresCSV << nome << "," << senha << std::endl;
+
+    return true;
 
 }
 
