@@ -123,7 +123,7 @@ bool Pergunta::gerar_perguntas(std::string linhacsv)
     return false;
 }
 
-bool Pergunta::gerar_perguntasDIssertativas(std::string linhacsv)
+bool Pergunta::gerar_perguntasDissertativas(std::string linhacsv)
 {
     // usando o regex para encontrar as vrigulas do csv
     std::regex item(R"([^;]+)");
@@ -216,6 +216,7 @@ bool Pergunta::verifica_alternativa()
     // verificao da alternativa correta
     switch (escolha)
     {
+    case 'a':
     case 'A':
         if (escolha == get_resposta())
         {
@@ -227,6 +228,7 @@ bool Pergunta::verifica_alternativa()
                       << std::endl;
         }
         return true;
+    case 'b':
     case 'B':
         if (escolha == get_resposta())
         {
@@ -238,6 +240,7 @@ bool Pergunta::verifica_alternativa()
                       << std::endl;
         }
         return true;
+    case 'c':
     case 'C':
         if (escolha == get_resposta())
         {
@@ -249,6 +252,7 @@ bool Pergunta::verifica_alternativa()
                       << std::endl;
         }
         return true;
+    case 'd':
     case 'D':
         if (escolha == get_resposta())
         {
@@ -262,7 +266,8 @@ bool Pergunta::verifica_alternativa()
         return true;
     default:
 
-        return false;
+        std::cout << "Alternativa nao reconhecida, tente novamente.\n";
+        return verifica_alternativa();
     }
 }
 
@@ -653,17 +658,19 @@ int Partida::fazerPerguntas(int N, int File)
 
     // Descobrir quantas perguntas tem no arquivo
     int numPerguntas = 0;
+    //std::cout << getPerguntasCSV().tellg() << std::endl;
+    posicoes.push_back(getPerguntasCSV().tellg());
+
     while (getline(getPerguntasCSV(), linha))
     {
         numPerguntas++;
-        //   std::cout << getPerguntasCSV().tellg() << std::endl;
+        //std::cout << getPerguntasCSV().tellg() << std::endl;
         posicoes.push_back(getPerguntasCSV().tellg());
     }
 
     getPerguntasCSV().clear();
 
-    numPerguntas--;
-    int num = numPerguntas;
+    //int num = numPerguntas;
 
     // Gerar os indexadores para as perguntas aleatórias:
 
@@ -707,7 +714,7 @@ int Partida::fazerPerguntas(int N, int File)
 
     int score = 0;
     int opcao = setTipo();
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < N; i++)
     {
         getPerguntasCSV().seekg(posicoes[noRepeat[i] - 1], getPerguntasCSV().beg);
         getline(getPerguntasCSV(), linha);
@@ -717,7 +724,7 @@ int Partida::fazerPerguntas(int N, int File)
         }
         if (opcao == 2)
         {
-            score += gerar_perguntasDIssertativas(linha); // verificação ja esta ddentro da função
+            score += gerar_perguntasDissertativas(linha); // verificação ja esta ddentro da função
         }
 
         // std::cout << noRepeat[i] << ": " << linha << std::endl;
@@ -725,6 +732,8 @@ int Partida::fazerPerguntas(int N, int File)
 
     free(numbers);
     free(noRepeat);
+
+    std::cout << "Sua pontuacao nessa partida foi de " << score << " pontos!" << std::endl;
     return score;
 }
 

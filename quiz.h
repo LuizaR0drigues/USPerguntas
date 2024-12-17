@@ -55,7 +55,7 @@ private:
 public:
     Pergunta(const std::string& linhaCSV = "");
     bool gerar_perguntas(std::string linhaCSV);
-    bool gerar_perguntasDIssertativas(std::string linhaCSV);
+    bool gerar_perguntasDissertativas(std::string linhaCSV);
     bool verifica_texto();
     bool verifica_alternativa();
 

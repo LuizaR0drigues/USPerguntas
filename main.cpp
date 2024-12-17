@@ -22,7 +22,8 @@ int main(){
             case 2:
             area = jogo.iniciarPartida(cntPartidas);
             partida.setFile(area);
-            partida.fazerPerguntas(5, area);
+            // *. Perguntar quantas perguntas fazer na partida
+            partida.fazerPerguntas(10, area);
 
             caso = jogo.menu();
             break;
