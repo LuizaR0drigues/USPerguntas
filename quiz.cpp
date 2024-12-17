@@ -1,4 +1,5 @@
 #include "quiz.h"
+#include "sstream"
 
 // CLASSE JOGADOR E SUAS FUNÇÔES
 // construtor
@@ -338,11 +339,129 @@ bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha){
     _jogadoresCSV.close();
 
     _jogadoresCSV.open(_stringJogadores, std::ios_base::out | std::ios_base::app);
-    _jogadoresCSV << nome << "," << senha << std::endl;
+    _jogadoresCSV << nome << "," << senha << "," << 0 << "," << 0  << "," << 0 <<
+     "," << 0 << "," << 0 << "," << 0 <<"," << 0 <<"," << 0 <<"," << 0 <<std::endl;
 
     return true;
-
 }
 
+std::string alterarScores(std::string linha, std::string scoreType, int score){
+
+    std::stringstream sLinha(linha);
+    //std::cout << linha << std::endl;
+
+    std::vector <std::string> vScores;
+    int i = 0;
+    int scoreNum = 0;
+
+    if (scoreType == "geral"){
+        scoreNum = 2;
+    } else if (scoreType == "mat_facil"){
+        scoreNum = 3;
+    } else if (scoreType == "mat_dificil"){
+        scoreNum = 4;
+    } else if (scoreType == "humanas_facil"){
+        scoreNum = 5;
+    } else if (scoreType == "humanas_dificil"){
+        scoreNum = 6;
+    } else if (scoreType == "bio_facil"){
+        scoreNum = 7;
+    } else if (scoreType == "bio_facil"){
+        scoreNum = 8;
+    } else if (scoreType == "lp_facil"){
+        scoreNum = 9;
+    } else if (scoreType == "lp_facil"){
+        scoreNum = 10;
+    }
+
+    std::string temp;
+
+    while (getline(sLinha, temp, ',')){
+        vScores.push_back(temp);
+       // std::cout << vScores[i] << ",";
+        i++;
+    }
+
+    getline(sLinha, temp);
+    vScores.push_back(temp);
+
+    std::stringstream sLinha2;
+
+    //std::cout << "vScore[" << scoreNum << "] " << std::stoi(vScores[scoreNum]) << " < " << score << "?" << std::endl;
+
+    if (std::stoi(vScores[scoreNum]) < score){
+        vScores[scoreNum] = std::to_string(score);
+        std::cout << "vscore[3] = " << vScores[3] << std::endl;
+
+        sLinha2 << vScores[0] << "," << vScores[1] << "," << vScores[2] << "," 
+       << vScores[3] << "," << vScores[4] << "," << vScores[5] << "," 
+       << vScores[6] << "," << vScores[7] << "," << vScores[8] << "," 
+       << vScores[9] << "," << vScores[10] << std::endl;
+
+       linha = sLinha2.str();
+       //std::cout << linha << std::endl;
+    } 
+
+    //std::cout << linha;
+
+return linha;
+}
+
+bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int score){
+
+    std::string linha, nomeSalvo;
+    std::fstream jogadorTemp;
+    std::stringstream sLinha;
+
+    jogadorTemp.open("jogadores_temp.csv", std::ios::out | std::ios::in);
+
+    if (!jogadorTemp){
+        printf("Erro ao criar o arquivo temporario de jogadores");
+        return false;
+    }
+
+    if(!_stringJogadores.empty()){
+         //   std::cout << "Temos uma string de jogadores" << std::endl;
+        if (_jogadoresCSV.is_open()){
+            _jogadoresCSV.close();
+         //   std::cout << "Fechando o arquivo de jogadores que estava aberto" << std::endl;
+        }
+        _jogadoresCSV.open(_stringJogadores, std::ios::in);
+    }
+
+    if (!_jogadoresCSV.is_open()){
+        _jogadoresCSV.open(_stringJogadores, std::ios::out);
+    }
+
+    if (!_jogadoresCSV.is_open()){
+        //std::cout << "O arquivo de jogadores não pode ser aberto" << std::endl;
+        return false;
+    }
+
+    while (getline(_jogadoresCSV, linha)){
+        //std::cout << "("<< nomeSalvo << "=" << nome << ")" << std::endl;
+        sLinha.str(linha);
+        getline(sLinha, nomeSalvo, ',');
+        if (nomeSalvo != nome){
+            jogadorTemp << linha;
+        } else {
+            jogadorTemp << alterarScores(linha, scoreType, score);
+        }
+    }
+
+    _jogadoresCSV.close();
+
+    _jogadoresCSV.open(_stringJogadores, std::ios::in);
+
+    jogadorTemp.seekg(0,std::ios_base::beg);
+
+    while (getline(jogadorTemp, linha)){
+        _jogadoresCSV << linha;
+        //std::cout << "_jogadoresCSV recebeu: " << linha << std::endl;
+    }
+
+    return false;
+
+}
 
 //Classe Jogo
