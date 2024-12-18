@@ -47,7 +47,7 @@ public:
    
 };
 
-// CLASSE PERGUNTA e DERIVADAS
+// CLASSE PERGUNTA 
 class Pergunta
 {
 private:
@@ -67,7 +67,13 @@ public:
     //getters
     char get_resposta();
     std::string get_dissertativa();
-      
+    std::string get_explic();
+    std::string get_linha();
+    void set_dissertativa(std::string aux);
+    void set_explic(std::string aux);
+    void set_linha(std::string auxLinha);
+    void set_resposta(char resp);
+    
 };
 
 class ArquivosCSV{
