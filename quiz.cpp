@@ -64,7 +64,7 @@ std::map <std::string, int> Jogador::get_scores() const
 // setters
 void Jogador::set_scoregeral(const int pontuacao)
 {
-    _scoregeral += pontuacao;
+    _scoregeral = pontuacao;
 }
 void Jogador::set_id(const std::string id)
 {
@@ -245,7 +245,6 @@ std::string Pergunta::get_dissertativa()
 bool Pergunta::verifica_texto()
 {
     std::cout << "Escreva sua resposta  somente com letras minusculas e sem caracteres especias";
-    std::cout << "A resposta correta é: \n";
     std::string resposta_jogador;
     std::string aux = std::string(1, get_resposta()); // tranformando em string
 
@@ -506,26 +505,33 @@ bool ArquivosCSV::alterarJogador(Jogador& jogador, std::string scoreType, int sc
     << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;*/
 
     std::string linhaJogador = sLinha2.str();
-    std::cout << "linha2 : (" << linhaJogador << ")" << std::endl;
+    //std::cout << "linha2 : (" << linhaJogador << ")" << std::endl;
     
+    if (_jogadoresCSV.eof()){
 
-    while (getline(_jogadoresCSV, linha)){
+        jogadorTemp << linhaJogador << std::endl;
+
+    } else {while (getline(_jogadoresCSV, linha)){
 
        // std::cout << "linha : (" << linha << ")" << std::endl;
-        temp.leJogador(linha);
+
+       temp.leJogador(linha);
+
+       //std::cout << "Escrito? " << escrito << "temp.nome: " << temp.get_Id() << " temp.scoreGeral = "<< temp.get_scoregeral() << " jogador.scoreGeral = "<< jogador.get_scoregeral() << " Temp < jogador? " << (temp < jogador) << " temp == jogador? " << (temp == jogador) << std::endl;
+
         if ((temp < jogador || temp == jogador) && !escrito){
             jogadorTemp << linhaJogador << std::endl;
-            std::cout << "JogadorTemp recebe (" << linhaJogador << ")" <<  std::endl;
+            //std::cout << "JogadorTemp recebe o jogador (" << linhaJogador << ")" <<  std::endl;
             escrito = true;
             //std::cout << sLinha2.str();
         }
-        if (linha != linhaJogador){
+        if (temp.get_Id() != jogador.get_Id()){
             jogadorTemp << linha << std::endl;
-            std::cout << "JogadorTemp recebe (" << linha << ")" << std::endl;
+            //std::cout << "JogadorTemp recebe (" << linha << ")" << std::endl;
             //std::cout << "Comparando (" << linha << ") com (" << linhaJogador << ") " << std::endl;
             //std::cout << linha;
         }
-    }
+    }}
 
 
     _jogadoresCSV.close();
@@ -593,6 +599,10 @@ int Partida::fazerPerguntas(int N, int File)
     int n;
 
     std::string chave = setFile(File);
+    std::stringstream sChave;
+    sChave.str(chave);
+    getline(sChave, chave, '.');
+
     std::string linha;
     std::vector<std::streampos> posicoes;
 
@@ -691,12 +701,39 @@ int Partida::fazerPerguntas(int N, int File)
     int scoreGeral = 0;
 
     std::cout << "Sua pontuacao nessa partida foi de " << score << " pontos!" << std::endl;
-    if (get_scores()[chave] < score){
+    //std::cout << "Chave: (" << chave << ")" << std::endl;
+    //std::cout << "get_scores()[chave]: (" << jogador.get_scores()[chave] << ")" << std::endl;
+    //std::cout << "score: (" << score << ")" << std::endl;
+
+    /*for (const auto& pair : jogador.get_scores()) {
+    std::cout << pair.first << ": " << pair.second << std::endl;
+    } */
+
+    if (jogador.get_scores()[chave] < score){
         jogador.set_score(chave, score);
-        for (const auto& nota : get_scores()) {
+
+        std::cout << "Novo score: (" << jogador.get_scores()[chave] << ")" << std::endl;
+
+       /* std::cout << "Jogador apos set_score (1): " << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
+        jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
+        ","<< jogador.get_scores()["mat_dificil"] << "," 
+        << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
+        << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
+        << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl; */
+        
+        for (const auto& nota : jogador.get_scores()) {
             scoreGeral += nota.second;
         }
-        jogador.set_score("geral", scoreGeral);
+        jogador.set_scoregeral(scoreGeral);
+
+        /*
+        std::cout << "Jogador apos set_score (2): " << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
+        jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
+        ","<< jogador.get_scores()["mat_dificil"] << "," 
+        << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
+        << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
+        << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;*/
+        
         alterarJogador(jogador, chave, score);
     }
 
@@ -814,7 +851,7 @@ bool Jogo::Login(Jogador& jogador)
         std::cout << std::endl;
 
         linha = arquivo.encontrarJogador(nick,senha);
-        std:: cout << "Linha retornada em encontrarJogador: " << linha <<std::endl;
+        //std:: cout << "Linha retornada em encontrarJogador: " << linha <<std::endl;
 
         if (linha.empty()){
             valido = false;
@@ -823,12 +860,12 @@ bool Jogo::Login(Jogador& jogador)
     }
 
     jogador.leJogador(linha);
-    std::cout << "Jogador dentro do Login: " << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
+    /*std::cout << "Jogador dentro do Login: " << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
     jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
     ","<< jogador.get_scores()["mat_dificil"] << "," 
     << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
     << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
-    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;
+    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl; */
     return true;
 }
 
