@@ -864,7 +864,8 @@ void Interface::set_init()
     window->display();
 }
 
-void Interface::set_retangulos(std::string& id, std::string& senha){
+void Interface::set_retangulos(std::string &id, std::string &senha)
+{
     sf::Text inputId, inputSenha;
     bool flagId = true; // Variável para alternar entre ID e Senha
 
@@ -874,9 +875,9 @@ void Interface::set_retangulos(std::string& id, std::string& senha){
     // Retângulo e texto para o ID
     sf::RectangleShape rectangleId(sf::Vector2f(200.f, 50.f)); // Tamanho do retângulo para ID
     rectangleId.setFillColor(sf::Color(255, 255, 255));        // Cor de preenchimento do retângulo (branco)
-    rectangleId.setOutlineThickness(2.f);                       // Espessura da borda
+    rectangleId.setOutlineThickness(2.f);                      // Espessura da borda
     rectangleId.setOutlineColor(sf::Color(255, 0, 255));       // Cor da borda (magenta)
-    rectangleId.setPosition(176.f, 206.f);                      // Posição do retângulo na tela para ID
+    rectangleId.setPosition(176.f, 206.f);                     // Posição do retângulo na tela para ID
 
     inputId.setFont(*font);                       // Usa a fonte carregada
     inputId.setCharacterSize(30);                 // Tamanho do texto
@@ -886,15 +887,15 @@ void Interface::set_retangulos(std::string& id, std::string& senha){
 
     // Retângulo e texto para a Senha
     sf::RectangleShape rectangleSenha(sf::Vector2f(200.f, 50.f)); // Tamanho do retângulo para Senha
-    rectangleSenha.setFillColor(sf::Color(255, 255, 255));            // Cor de preenchimento do retângulo (cinza escuro)
-    rectangleSenha.setOutlineThickness(2.f);                       // Espessura da borda
+    rectangleSenha.setFillColor(sf::Color(255, 255, 255));        // Cor de preenchimento do retângulo (cinza escuro)
+    rectangleSenha.setOutlineThickness(2.f);                      // Espessura da borda
     rectangleSenha.setOutlineColor(sf::Color(255, 0, 255));       // Cor da borda (magenta)
-    rectangleSenha.setPosition(176.f, 400.f);                      // Posição do retângulo para senha
+    rectangleSenha.setPosition(176.f, 400.f);                     // Posição do retângulo para senha
 
-    inputSenha.setFont(*font);                       // Usa a fonte carregada
-    inputSenha.setCharacterSize(30);                 // Tamanho do texto
-    inputSenha.setFillColor(sf::Color(255, 0, 255)); // Cor do texto (magenta)
-    inputSenha.setPosition(190.f, 404.f);            // Posição do texto "Senha"
+    inputSenha.setFont(*font);                                          // Usa a fonte carregada
+    inputSenha.setCharacterSize(30);                                    // Tamanho do texto
+    inputSenha.setFillColor(sf::Color(255, 0, 255));                    // Cor do texto (magenta)
+    inputSenha.setPosition(190.f, 404.f);                               // Posição do texto "Senha"
     inputSenha.setString("Senha: " + std::string(senha.length(), '*')); // Exibe os asteriscos para a senha
 
     // Desenha os retângulos das caixas de texto
@@ -907,14 +908,13 @@ void Interface::set_retangulos(std::string& id, std::string& senha){
 
     // Exibe o conteúdo da janela
     window->display();
-
 }
 
 void Interface::caixa_textoUser()
 {
     std::string id, senha;
     bool flagId = true; // Variável para alternar entre ID e Senha
-    bool enterPressed = false; 
+
     // Limpa a janela
     window->clear();
 
@@ -929,48 +929,42 @@ void Interface::caixa_textoUser()
 
         if (event.type == sf::Event::TextEntered)
         {
-            if (flagId) // Se estiver editando o ID
+            // Se estiver editando o ID
+            if (flagId)
             {
-                if (event.text.unicode == 8) // Backspace (apagar)
+                if (event.text.unicode < 128) // Verifica se o caractere é válido
                 {
-                    if (!id.empty())
-                        id.pop_back(); // Remove o último caractere
+                    id += static_cast<char>(event.text.unicode); // Adiciona o caractere ao ID
                 }
-                else if (event.text.unicode < 128) // Se for um caractere ASCII válido
-                {
-                    id += static_cast<char>(event.text.unicode); // Adiciona o caractere digitado ao ID
-                }
+                std::cout << "Escrita da senha" << flagId << "\n";
             }
             else // Se estiver editando a Senha
             {
-                if (event.text.unicode == 8) // Backspace (apagar)
+                std::cout << "Escrita da senha";
+                if (event.text.unicode < 128) // Permite caracteres válidos na senha
                 {
-                    if (!senha.empty())
-                        senha.pop_back(); // Remove o último caractere
+                    senha += static_cast<char>(event.text.unicode); // Adiciona à senha
+                    flagId = false;
                 }
-                else if (event.text.unicode < 128) // Se for um caractere ASCII válido
-                {
-                    senha += static_cast<char>(event.text.unicode); // Adiciona o caractere digitado à Senha
-                }
-                
             }
         }
-        
-    // Alterna entre o campo ID e Senha quando pressionar Enter
-        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
+
+        // Alterna entre o campo ID e Senha quando pressionar Enter
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
-            if (!enterPressed) // Verifica se a tecla Enter não foi pressionada recentemente
+            if (flagId)
             {
-                flagId = !flagId; // Troca entre ID e Senha
-                enterPressed = true; // Marca que a tecla Enter foi pressionada
+                std::cout << "Enter";
+                flagId = false;  // Alterna para Senha
             }
-        }
-        
-        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Enter)
-        {
-            enterPressed = false; // Reseta a variável quando a tecla Enter for liberada
+            else
+            {
+                flagId = true;   // Alterna para ID
+            }
         }
     }
+
+    // Chama a função para desenhar os retângulos
     set_retangulos(id, senha);
 }
 
