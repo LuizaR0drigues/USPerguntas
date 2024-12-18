@@ -423,23 +423,30 @@ bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha)
         return false;
     }
 
-    while (getline(_jogadoresCSV, nomeSalvo, ','))
+    std::fstream jogadoresTemp;
+    jogadoresTemp.open("jogadores_temp.csv", std::ios::in);
+
+    while (getline(_jogadoresCSV, nomeSalvo))
     {
+         getline(_jogadoresCSV, nomeSalvo, ',');
         // std::cout << "("<< nomeSalvo << "=" << nome << ")" << std::endl;
         if (nomeSalvo == nome)
         {
             std::cout << "Erro: Nome de jogador ja existe. Tente outro nome..." << std::endl;
             _jogadoresCSV.close();
+            jogadoresTemp.close();
             return false;
         }
-        getline(_jogadoresCSV, nomeSalvo);
     }
 
     _jogadoresCSV.close();
 
     _jogadoresCSV.open(_stringJogadores, std::ios_base::out | std::ios_base::app);
+
     _jogadoresCSV << nome << "," << senha << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << std::endl;
 
+    jogadoresTemp.close();
+    _jogadoresCSV.close();
     return true;
 }
 
@@ -800,13 +807,28 @@ void Jogo::criarUsuario()
 
     std::cout << std::endl;
 
-    while (_arquivo.adicionarJogador(nick, senha) == false)
+    bool valido = true;
+
+    if (nick.find(',', 0) != std::string::npos){
+            std::cout << "O Nick nao pode ter virgulas, tente novamente: " << std::endl;
+            valido = false;
+    }
+
+    while (!valido || _arquivo.adicionarJogador(nick, senha) == false)
     {
+        valido = true;
 
         std::cout << "Digite abaixo o seu Nick: \n";
         std::cin >> nick;
         std::cout << "Digite sua senha: \n";
         std::cin >> senha;
+
+        std::cout << std::endl;
+
+        if (nick.find(',', 0) != std::string::npos){
+            std::cout << "O Nick nao pode ter virgulas, tente novamente: " << std::endl;
+            valido = false;
+        }
     }
 }
 
