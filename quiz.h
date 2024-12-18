@@ -27,6 +27,7 @@ public:
 
     //metodos e operadores
     bool identificar_player(std::string nome, std::string senha);
+    void leJogador(std::string linha);
     friend bool operator>(const Jogador& player_A, const Jogador& player_B);
     friend bool operator<(const Jogador& player_A, const Jogador& player_B);
     friend bool operator==(const Jogador& player_A, const Jogador& player_B);
@@ -35,11 +36,14 @@ public:
     int get_scoregeral() const;
     std::string get_Id() const;
     std::string get_Senha() const;
+    std::map<std::string, int> get_scores() const;
+
 
     //setters
     void set_scoregeral(const int pontuacao);
     void set_id(const std::string id);
-
+    void set_senha(const std::string senha);
+    void set_score(const std::string& category, int value);
    
 };
 
@@ -62,8 +66,7 @@ public:
     //getters
     char get_resposta();
     std::string get_dissertativa();
-    
-    
+      
 };
 
 class ArquivosCSV{
@@ -93,9 +96,10 @@ public:
     void setJogadores(std::string arquivo);
     //int fazerPerguntas(int N);
     bool adicionarJogador(std::string nome, std::string senha);
-    bool alterarJogador(std::string nome, std::string scoreType, int score);
+    bool alterarJogador(Jogador jogador, std::string scoreType, int score);
     /* Essa função altera o score "scoreType" do jogador dado por "nome", no
     caso em que o score fornecido é maior que o atual */
+    std::string encontrarJogador(std::string nome, std::string senha);
     
     // Getters:
     std::fstream& getPerguntasCSV() {
@@ -131,7 +135,7 @@ class Partida: private Jogador, private Pergunta, public ArquivosCSV{
 
     public:
     int fazerPerguntas(int n, int File);
-    void setFile(int N);
+    std::string setFile(int N);
     int setTipo();
 
 };
@@ -144,6 +148,7 @@ class Jogo {
     public:
         void descricaoInicial();
         void criarUsuario();
+        bool Login(Jogador& jogador);
         int iniciarPartida(int cntPartida);
         int menu();
         Jogo();

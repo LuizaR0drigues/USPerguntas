@@ -56,6 +56,11 @@ std::string Jogador::get_Senha() const
     return _senha;
 };
 
+std::map <std::string, int> Jogador::get_scores() const
+{
+    return _scores;
+};
+
 // setters
 void Jogador::set_scoregeral(const int pontuacao)
 {
@@ -64,6 +69,64 @@ void Jogador::set_scoregeral(const int pontuacao)
 void Jogador::set_id(const std::string id)
 {
     _id = id;
+}
+void Jogador::set_senha(const std::string senha)
+{
+    _senha = senha;
+}
+void Jogador::set_score(const std::string& chave, int valor) {
+    _scores[chave] = valor;
+}
+
+void Jogador::leJogador(std::string linha){
+    std::stringstream sLinha;
+    std::string temp;
+
+    std::cout << linha << std::endl;
+
+    sLinha.str(linha);
+
+    getline(sLinha,temp,',');
+    set_id(temp);
+
+    getline(sLinha,temp,',');
+    set_senha(temp);
+
+    getline(sLinha,temp,',');
+    set_scoregeral(stoi(temp));
+
+    getline(sLinha,temp,',');
+    _scores["mat_facil"] = stoi(temp);
+
+    getline(sLinha,temp,',');
+    _scores["mat_facil"] = stoi(temp);
+
+    getline(sLinha,temp,',');
+    _scores["humanas_facil"] = stoi(temp);
+
+    getline(sLinha,temp,',');
+    _scores["humanas_facil"] = stoi(temp);
+
+    getline(sLinha,temp,',');
+    _scores["bio_facil"] = stoi(temp);
+
+    getline(sLinha,temp,',');
+    _scores["bio_facil"] = stoi(temp);
+
+    getline(sLinha,temp,',');
+    _scores["lp_facil"] = stoi(temp);
+
+    getline(sLinha,temp,',');
+    _scores["lp_facil"] = stoi(temp);
+
+    std::cout << "ID: " << _id << "\n";
+    std::cout << "Senha: " << _senha << "\n";
+    std::cout << "Score Geral: " << _scoregeral << "\n";
+
+    std::cout << "Scores:\n";
+    for (const auto& pair : _scores) {
+        std::cout << "  " << pair.first << ": " << pair.second << "\n";
+    }
 }
 
 // CLASSE PERGUNTAS
@@ -314,87 +377,46 @@ ArquivosCSV::~ArquivosCSV()
     }
 }
 
-/*
-int ArquivosCSV::fazerPerguntas(int N){
-    int n;
-    std::string linha;
-    std::vector <std::streampos> posicoes;
+std::string ArquivosCSV::encontrarJogador(std::string nome, std::string senha){
 
-    if(!_stringPerguntas.empty()){
-        if (_perguntasCSV.is_open()){
-            _perguntasCSV.close();
+std::string linha;
+std::string nomeAtual;
+std::stringstream sTemp;
+
+    if (!_stringJogadores.empty())
+    {
+        //   std::cout << "Temos uma string de jogadores" << std::endl;
+        if (_jogadoresCSV.is_open())
+        {
+            _jogadoresCSV.close();
+            //   std::cout << "Fechando o arquivo de jogadores que estava aberto" << std::endl;
         }
-        _perguntasCSV.open(_stringPerguntas, std::ios::in);
+        _jogadoresCSV.open(_stringJogadores, std::ios::in);
     }
 
-    if (!_perguntasCSV.is_open()){
-        printf("Nao foi possivel abrir o arquivo de perguntas");
-        return 1;
+    if (!_jogadoresCSV.is_open())
+    {
+        _jogadoresCSV.open(_stringJogadores, std::ios::out);
     }
 
-    // Descobrir quantas perguntas tem no arquivo
-    int numPerguntas = 0;
-    while (getline(_perguntasCSV, linha)){
-        numPerguntas++;
-     //   std::cout << _perguntasCSV.tellg() << std::endl;
-        posicoes.push_back(_perguntasCSV.tellg());
+    if (!_jogadoresCSV.is_open())
+    {
+        std::cout << "O arquivo de jogadores não pode ser aberto" << std::endl;
+        return "";
     }
 
-    _perguntasCSV.clear();
-
-    numPerguntas--;
-    int num = numPerguntas;
-
-    // Gerar os indexadores para as perguntas aleatórias:
-
-    if ((numPerguntas) < N){
-        printf ("ERROR: Number of integers in the interval is lesser than the"
-         "range of the interval.");
-        return -1;
-    }
-
-    int* numbers = (int*) malloc(sizeof(int) * (numPerguntas));
-    int* noRepeat = (int*) malloc(sizeof(int) * (N));
-
-    if (numbers == NULL || noRepeat == NULL){
-        printf ("ERROR: Unable to allocate space for integer vectors");
-    };
-
-    for (int i = 0; i < numPerguntas; i++) {
-        numbers[i] = i+1;
-    }
-
-    int randN;
-
-    for (int i = 0; i < N; i++) {
-
-        if (numPerguntas == 1){
-            noRepeat[i] = numbers[0];
-            continue;
+    while (getline(_jogadoresCSV, linha)){
+        sTemp.str(linha);
+        getline(sTemp, nomeAtual, ',');
+        if (nomeAtual == nome){
+            getline(sTemp, linha, ',');
+            return linha;
         }
-
-        randN = rand() % numPerguntas;
-
-        noRepeat[i] = numbers[randN];
-        numbers[randN] = numbers[numPerguntas-1];
-        numPerguntas--;
     }
 
+    return "";
 
-    int score = 0;
-
-    for (int i = 0; i <num ; i++){
-        _perguntasCSV.seekg(posicoes[noRepeat[i]-1], _perguntasCSV.beg);
-        getline (_perguntasCSV, linha);
-        //score += _pergunta.GerarPergunta();
-
-        //std::cout << noRepeat[i] << ": " << linha << std::endl;
-    }
-
-free (numbers);
-free(noRepeat);
-return 0;
-} */
+}
 
 bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha)
 {
@@ -424,11 +446,14 @@ bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha)
     }
 
     std::fstream jogadoresTemp;
+    std::stringstream sTemp;
     jogadoresTemp.open("jogadores_temp.csv", std::ios::in);
 
     while (getline(_jogadoresCSV, nomeSalvo))
     {
-         getline(_jogadoresCSV, nomeSalvo, ',');
+         sTemp.str(nomeSalvo);
+         getline(sTemp, nomeSalvo, ',');
+         
         // std::cout << "("<< nomeSalvo << "=" << nome << ")" << std::endl;
         if (nomeSalvo == nome)
         {
@@ -436,7 +461,7 @@ bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha)
             _jogadoresCSV.close();
             jogadoresTemp.close();
             return false;
-        }
+        } 
     }
 
     _jogadoresCSV.close();
@@ -450,94 +475,12 @@ bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha)
     return true;
 }
 
-std::string alterarScores(std::string linha, std::string scoreType, int score)
-{
-
-    std::stringstream sLinha(linha);
-    // std::cout << linha << std::endl;
-
-    std::vector<std::string> vScores;
-    int i = 0;
-    int scoreNum = 0;
-
-    if (scoreType == "geral")
-    {
-        scoreNum = 2;
-    }
-    else if (scoreType == "mat_facil")
-    {
-        scoreNum = 3;
-    }
-    else if (scoreType == "mat_dificil")
-    {
-        scoreNum = 4;
-    }
-    else if (scoreType == "humanas_facil")
-    {
-        scoreNum = 5;
-    }
-    else if (scoreType == "humanas_dificil")
-    {
-        scoreNum = 6;
-    }
-    else if (scoreType == "bio_facil")
-    {
-        scoreNum = 7;
-    }
-    else if (scoreType == "bio_facil")
-    {
-        scoreNum = 8;
-    }
-    else if (scoreType == "lp_facil")
-    {
-        scoreNum = 9;
-    }
-    else if (scoreType == "lp_facil")
-    {
-        scoreNum = 10;
-    }
-
-    std::string temp;
-
-    while (getline(sLinha, temp, ','))
-    {
-        vScores.push_back(temp);
-        // std::cout << vScores[i] << ",";
-        i++;
-    }
-
-    getline(sLinha, temp);
-    vScores.push_back(temp);
-
-    std::stringstream sLinha2;
-
-    // std::cout << "vScore[" << scoreNum << "] " << std::stoi(vScores[scoreNum]) << " < " << score << "?" << std::endl;
-
-    if (std::stoi(vScores[scoreNum]) < score)
-    {
-        vScores[scoreNum] = std::to_string(score);
-        std::cout << "vscore[3] = " << vScores[3] << std::endl;
-
-        sLinha2 << vScores[0] << "," << vScores[1] << "," << vScores[2] << ","
-                << vScores[3] << "," << vScores[4] << "," << vScores[5] << ","
-                << vScores[6] << "," << vScores[7] << "," << vScores[8] << ","
-                << vScores[9] << "," << vScores[10] << std::endl;
-
-        linha = sLinha2.str();
-        // std::cout << linha << std::endl;
-    }
-
-    // std::cout << linha;
-
-    return linha;
-}
-
-bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int score)
+bool ArquivosCSV::alterarJogador(Jogador jogador, std::string scoreType, int score)
 {
 
     std::string linha, nomeSalvo;
     std::fstream jogadorTemp;
-    std::stringstream sLinha;
+    std::stringstream sLinha, sLinha2;
 
     jogadorTemp.open("jogadores_temp.csv", std::ios::out | std::ios::in);
 
@@ -569,20 +512,30 @@ bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int sc
         return false;
     }
 
-    while (getline(_jogadoresCSV, linha))
-    {
-        // std::cout << "("<< nomeSalvo << "=" << nome << ")" << std::endl;
-        sLinha.str(linha);
-        getline(sLinha, nomeSalvo, ',');
-        if (nomeSalvo != nome)
-        {
+    Jogador temp;
+    bool escrito = false;
+
+
+    sLinha2 << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
+    jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
+    ","<< jogador.get_scores()["mat_dificil"] << "," 
+    << "," << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
+    << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
+    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;
+
+
+
+    while (getline(_jogadoresCSV, linha)){
+
+        temp.leJogador(linha);
+        if ((temp < jogador || temp == jogador) && !escrito){
+            jogadorTemp << sLinha2.str();
+            escrito = true;
+        }
             jogadorTemp << linha;
-        }
-        else
-        {
-            jogadorTemp << alterarScores(linha, scoreType, score);
-        }
+
     }
+
 
     _jogadoresCSV.close();
 
@@ -600,7 +553,7 @@ bool ArquivosCSV::alterarJogador(std::string nome, std::string scoreType, int sc
 }
 
 // Classe partida
-void Partida::setFile(int N)
+std::string Partida::setFile(int N)
 {
     switch (N)
     {
@@ -631,6 +584,7 @@ void Partida::setFile(int N)
     }
 
     setStringJogadores("jogadores.csv");
+    return getStringPerguntas();
 }
 
 int Partida::setTipo()
@@ -644,7 +598,7 @@ int Partida::fazerPerguntas(int N, int File)
 {
     int n;
 
-    setFile(File);
+    std::string chave = setFile(File);
     std::string linha;
     std::vector<std::streampos> posicoes;
 
@@ -740,7 +694,16 @@ int Partida::fazerPerguntas(int N, int File)
     free(numbers);
     free(noRepeat);
 
+    int scoreGeral = 0;
+
     std::cout << "Sua pontuacao nessa partida foi de " << score << " pontos!" << std::endl;
+    if (get_scores()[chave] < score){
+        set_score(chave, score);
+        for (const auto& nota : get_scores()) {
+            scoreGeral += nota.second;
+        }
+        set_score("geral", scoreGeral);
+    }
     return score;
 }
 
@@ -830,6 +793,38 @@ void Jogo::criarUsuario()
             valido = false;
         }
     }
+}
+
+bool Jogo::Login(Jogador& jogador)
+{
+
+    ArquivosCSV arquivo;
+    std::string nick, senha;
+    bool valido = false;
+
+    std::cout << " *******************************************************\n";
+    std::cout << "                      Faça seu login:                   \n";
+    std::cout << " ********************************************************\n";
+
+    while (!valido)
+    {
+        valido = true;
+        std::cout << "Digite abaixo o seu Nick: \n";
+        std::cin >> nick;
+        std::cout << "Digite sua senha: \n";
+        std::cin >> senha;
+
+        std::cout << std::endl;
+
+        std::string linha = arquivo.encontrarJogador(nick,senha);
+
+        if (linha.empty()){
+            valido = false;
+            std::cout << "Credenciais inválidas, tente novamente."
+        }
+    }
+
+
 }
 
 int Jogo::iniciarPartida(int cnt)

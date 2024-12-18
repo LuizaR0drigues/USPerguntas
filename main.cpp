@@ -20,6 +20,7 @@ int main(){
             break;
 
             case 2:
+            jogo.login();
             area = jogo.iniciarPartida(cntPartidas);
             partida.setFile(area);
             // *. Perguntar quantas perguntas fazer na partida
