@@ -52,6 +52,9 @@
         "string_view": "cpp",
         "numbers": "cpp",
         "ranges": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "bitset": "cpp",
+        "cstring": "cpp",
+        "regex": "cpp"
     }
 }

@@ -2,7 +2,6 @@
 
 // CLASSE JOGADOR E SUAS FUNÇÔES
 // construtor
-
 Jogador::Jogador(const std::string aux_id, const std::string aux_senha)
 {
     _id = aux_id;
@@ -129,6 +128,43 @@ Pergunta::Pergunta(const std::string &linhaCSV)
     _resposta = '0';
 }
 
+//getters Perguntas
+char Pergunta::get_resposta()
+{
+    return _resposta;
+}
+
+std::string Pergunta::get_dissertativa()
+{
+    return _resposta_diss;
+}
+std::string Pergunta::get_explic()
+{
+    return _explic;
+}
+std::string Pergunta::get_linha()
+{
+    return _linha;
+}
+
+//setters Perguntas
+void Pergunta::set_linha(std::string auxlinha)
+{
+     _linha = auxlinha;
+}
+void Pergunta::set_dissertativa(std::string aux)
+{
+     _resposta_diss = aux;
+}
+void Pergunta::set_explic(std::string aux)
+{
+     _explic = aux;
+}
+void Pergunta::set_resposta(char resp)
+{
+     _resposta = resp;
+}
+//funcao responsavel por ler o arquivo, retirar os separadores e distribuir os dados entre as variaveos
 bool Pergunta::gerar_perguntas(std::string linhacsv)
 {
     // usando o regex para encontrar as vrigulas do csv
@@ -152,7 +188,7 @@ bool Pergunta::gerar_perguntas(std::string linhacsv)
     }
 
     // passa a pergunta para a linha
-    _linha = aux_valores[0];
+    set_linha(aux_valores[0]);
 
     // transferes as alternativas pro seu vetor
     for (size_t i = 0; i < 4; i++)
@@ -161,15 +197,15 @@ bool Pergunta::gerar_perguntas(std::string linhacsv)
     }
 
     // transfere a resposta e explicacao para seus respectivos espacos
-    _resposta = aux_valores[5][0]; // pegando somente um caractere -> um char
-    _explic = aux_valores[6];
+    set_resposta(aux_valores[5][0]); // pegando somente um caractere -> um char
+    set_explic( aux_valores[6]);
 
     // impressão de perguntas
     std::cout << _linha << std::endl;
     std::cout << "A)" << _alternativa[0] << "    " << "B)" << _alternativa[1] << std::endl;
     std::cout << "C)" << _alternativa[2] << "    " << "D)" << _alternativa[3] << std::endl;
 
-    if (verifica_alternativa())
+    if (verifica_alternativa()) //verificao da resposta do usuario
     {
         return true;
     }
@@ -177,6 +213,7 @@ bool Pergunta::gerar_perguntas(std::string linhacsv)
     return false;
 }
 
+//funcao que gera perguntas e verifica resposta dissertativas
 bool Pergunta::gerar_perguntasDissertativas(std::string linhacsv)
 {
     // usando o regex para encontrar as vrigulas do csv
@@ -200,20 +237,20 @@ bool Pergunta::gerar_perguntasDissertativas(std::string linhacsv)
     }
 
     // passa a pergunta para a linha
-    _linha = aux_valores[0];
+    set_linha( aux_valores[0]);
 
     // transferes as alternativas pro seu vetor
-    for (size_t i = 0; i < 4; i++)
+    for (size_t i = 1; i < 5; i++)
     {
         _alternativa[i] = aux_valores[i + 1];
     }
 
     // transfere a resposta e explicacao para seus respectivos espacos
-    _resposta = aux_valores[5][0]; // pegando somente um caractere -> um char
-    _explic = aux_valores[6];
+    set_dissertativa(aux_valores[6]);
+    set_explic(aux_valores[7]);
 
     // impressão de perguntas
-    std::cout << _linha << std::endl;
+    std::cout << get_linha() << std::endl;
     if (verifica_texto())
     {
         return true; // validacao da resposta
@@ -222,21 +259,10 @@ bool Pergunta::gerar_perguntasDissertativas(std::string linhacsv)
     return false;
 }
 
-char Pergunta::get_resposta()
-{
-    return _resposta;
-}
-
-std::string Pergunta::get_dissertativa()
-{
-    return _resposta_diss;
-}
-
 bool Pergunta::verifica_texto()
 {
-    std::cout << "Escreva sua resposta  somente com letras minusculas e sem caracteres especias";
+    std::cout << "Escreva sua resposta: \n";
     std::string resposta_jogador;
-    std::string aux = std::string(1, get_resposta()); // tranformando em string
 
     // requisitando a resposta do jagador
     std::cin >> resposta_jogador;
@@ -245,7 +271,7 @@ bool Pergunta::verifica_texto()
     std::string resposta_correta = get_dissertativa();
 
     size_t pos = resposta_correta.find(resposta_jogador);
-
+    
     if (pos != std::string::npos)
     {
         std::cout << "RESPOSTA CORRETA! +1 ponto \n";
@@ -254,8 +280,7 @@ bool Pergunta::verifica_texto()
     }
     else
     {
-        std::cout << "Resposta Incorreta!\n"
-                  << std::endl;
+        std::cout << "Resposta Incorreta!\n A resposta correta era: " << resposta_correta<< std::endl;
         return false;
     }
 }
@@ -267,7 +292,7 @@ bool Pergunta::verifica_alternativa()
     resposta = get_resposta();
     std::cin >> escolha;
 
-    std::cout << "A resposta esperada era " << resposta << std::endl;
+    std::cout << "A resposta esperada era: " << resposta << std::endl;
 
     // verificao da alternativa correta
 
@@ -284,7 +309,7 @@ bool Pergunta::verifica_alternativa()
         {
             std::cout << "Resposta Incorreta!\n"
                       << std::endl;
-            std::cout << "A resposta esperada era " << resposta << std::endl;
+            std::cout << "A resposta esperada era: " << resposta << std::endl;
             return false;
         }
     default:
