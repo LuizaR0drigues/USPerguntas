@@ -82,7 +82,7 @@ void Jogador::leJogador(std::string linha){
     std::stringstream sLinha;
     std::string temp;
 
-    std::cout << linha << std::endl;
+    //std::cout << linha << std::endl;
 
     sLinha.str(linha);
 
@@ -99,26 +99,27 @@ void Jogador::leJogador(std::string linha){
     _scores["mat_facil"] = stoi(temp);
 
     getline(sLinha,temp,',');
-    _scores["mat_facil"] = stoi(temp);
+    _scores["mat_difiil"] = stoi(temp);
 
     getline(sLinha,temp,',');
     _scores["humanas_facil"] = stoi(temp);
 
     getline(sLinha,temp,',');
-    _scores["humanas_facil"] = stoi(temp);
+    _scores["humanas_dificil"] = stoi(temp);
 
     getline(sLinha,temp,',');
     _scores["bio_facil"] = stoi(temp);
 
     getline(sLinha,temp,',');
-    _scores["bio_facil"] = stoi(temp);
+    _scores["bio_dificil"] = stoi(temp);
 
     getline(sLinha,temp,',');
     _scores["lp_facil"] = stoi(temp);
 
-    getline(sLinha,temp,',');
-    _scores["lp_facil"] = stoi(temp);
+    getline(sLinha,temp);
+    _scores["lp_dificil"] = stoi(temp);
 
+    /*
     std::cout << "ID: " << _id << "\n";
     std::cout << "Senha: " << _senha << "\n";
     std::cout << "Score Geral: " << _scoregeral << "\n";
@@ -126,7 +127,7 @@ void Jogador::leJogador(std::string linha){
     std::cout << "Scores:\n";
     for (const auto& pair : _scores) {
         std::cout << "  " << pair.first << ": " << pair.second << "\n";
-    }
+    }  */
 }
 
 // CLASSE PERGUNTAS
@@ -445,7 +446,7 @@ bool ArquivosCSV::adicionarJogador(std::string nome, std::string senha)
     return true;
 }
 
-bool ArquivosCSV::alterarJogador(Jogador jogador, std::string scoreType, int score)
+bool ArquivosCSV::alterarJogador(Jogador& jogador, std::string scoreType, int score)
 {
 
     std::string linha, nomeSalvo;
@@ -486,23 +487,36 @@ bool ArquivosCSV::alterarJogador(Jogador jogador, std::string scoreType, int sco
     bool escrito = false;
 
 
-    sLinha2 << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
+    sLinha2 << jogador.get_Id() << "," << jogador.get_Senha() << "," ; /*<<
     jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
     ","<< jogador.get_scores()["mat_dificil"] << "," 
     << "," << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
     << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
-    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;
+    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] ;*/
 
+/*
+    std::cout << "ESSE:"<< jogador.get_Id() << "," << jogador.get_Senha() << "," <<
+    jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
+    ","<< jogador.get_scores()["mat_dificil"] << "," 
+    << "," << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
+    << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
+    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;*/
+
+    std::cout << "linha2 : (" << sLinha2.str() << ")" << std::endl;
 
 
     while (getline(_jogadoresCSV, linha)){
 
+
+       // std::cout << "linha : (" << linha << ")" << std::endl;
         temp.leJogador(linha);
         if ((temp < jogador || temp == jogador) && !escrito){
             jogadorTemp << sLinha2.str();
             escrito = true;
+            //std::cout << sLinha2.str();
         }
             jogadorTemp << linha;
+            //std::cout << linha;
 
     }
 
@@ -668,12 +682,17 @@ int Partida::fazerPerguntas(int N, int File)
 
     std::cout << "Sua pontuacao nessa partida foi de " << score << " pontos!" << std::endl;
     if (get_scores()[chave] < score){
-        set_score(chave, score);
+        jogador.set_score(chave, score);
+        alterarJogador(jogador, "geral", score);
+        //std::cout << "AJUSTE" << std::endl;
         for (const auto& nota : get_scores()) {
             scoreGeral += nota.second;
         }
-        set_score("geral", scoreGeral);
+        jogador.set_score("geral", scoreGeral);
+        alterarJogador(jogador, "geral", scoreGeral);
+
     }
+
     return score;
 }
 
@@ -796,6 +815,12 @@ bool Jogo::Login(Jogador& jogador)
     }
 
     jogador.leJogador(linha);
+    std::cout << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
+    jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
+    ","<< jogador.get_scores()["mat_dificil"] << "," 
+    << "," << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
+    << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
+    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;
     return true;
 }
 

@@ -43,7 +43,7 @@ public:
     void set_scoregeral(const int pontuacao);
     void set_id(const std::string id);
     void set_senha(const std::string senha);
-    void set_score(const std::string& category, int value);
+    void set_score(const std::string& chave, int valor);
    
 };
 
@@ -56,6 +56,7 @@ private:
     std::string _explic;
     std::string _resposta_diss; //resposta para o caso dissertativo
     char _resposta;
+    
 public:
     Pergunta(const std::string& linhaCSV = "");
     bool gerar_perguntas(std::string linhaCSV);
@@ -96,7 +97,7 @@ public:
     void setJogadores(std::string arquivo);
     //int fazerPerguntas(int N);
     bool adicionarJogador(std::string nome, std::string senha);
-    bool alterarJogador(Jogador jogador, std::string scoreType, int score);
+    bool alterarJogador(Jogador& jogador, std::string scoreType, int score);
     /* Essa função altera o score "scoreType" do jogador dado por "nome", no
     caso em que o score fornecido é maior que o atual */
     std::string encontrarJogador(std::string nome, std::string senha);
@@ -134,6 +135,7 @@ class Partida: public Jogador, private Pergunta, public ArquivosCSV{
     private:
 
     public:
+    Jogador jogador;
     int fazerPerguntas(int n, int File);
     std::string setFile(int N);
     int setTipo();
