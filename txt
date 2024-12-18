@@ -8,6 +8,11 @@
     "8) Lingua Portuguesa (dificil). \n" << std::endl;
 
 
+a,12321,0,0,0,0,0,0,0,0,0
+leticia,12321,0,0,0,0,0,0,0,0,0
+b,12321,0,0,0,0,0,0,0,0,0
+c,12321,0,0,0,0,0,0,0,0,
+
     checar se todos os arquivos estao fechando
 
      getline(sLinha,temp,',');

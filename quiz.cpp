@@ -363,7 +363,10 @@ std::stringstream sTemp;
             //   std::cout << "Fechando o arquivo de jogadores que estava aberto" << std::endl;
         }
         _jogadoresCSV.open(_stringJogadores, std::ios::in);
-    }
+    } else { 
+        
+        std::cout << "Não há nada em stringJogadores" << std::endl;
+        return "";}
 
     if (!_jogadoresCSV.is_open())
     {
@@ -378,9 +381,10 @@ std::stringstream sTemp;
 
     while (getline(_jogadoresCSV, linha)){
         sTemp.str(linha);
+       // std::cout << "Linhas anteriores em encontrarLogador: " << linha << std::endl;
         getline(sTemp, nomeAtual, ',');
         if (nomeAtual == nome){
-            getline(sTemp, linha, ',');
+           // std::cout << "Linha dentro de encontrarJogador: " << linha << std::endl;
             return linha;
         }
     }
@@ -453,7 +457,7 @@ bool ArquivosCSV::alterarJogador(Jogador& jogador, std::string scoreType, int sc
     std::fstream jogadorTemp;
     std::stringstream sLinha, sLinha2;
 
-    jogadorTemp.open("jogadores_temp.csv", std::ios::out | std::ios::in);
+    jogadorTemp.open("jogadores_temp.csv", std::ios::out);
 
     if (!jogadorTemp)
     {
@@ -486,13 +490,12 @@ bool ArquivosCSV::alterarJogador(Jogador& jogador, std::string scoreType, int sc
     Jogador temp;
     bool escrito = false;
 
-
-    sLinha2 << jogador.get_Id() << "," << jogador.get_Senha() << "," ; /*<<
+    sLinha2 << jogador.get_Id() << "," << jogador.get_Senha() << ","  <<
     jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
-    ","<< jogador.get_scores()["mat_dificil"] << "," 
+    ","<< jogador.get_scores()["mat_dificil"]
     << "," << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
     << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
-    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] ;*/
+    << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"];
 
 /*
     std::cout << "ESSE:"<< jogador.get_Id() << "," << jogador.get_Senha() << "," <<
@@ -502,34 +505,41 @@ bool ArquivosCSV::alterarJogador(Jogador& jogador, std::string scoreType, int sc
     << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
     << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;*/
 
-    std::cout << "linha2 : (" << sLinha2.str() << ")" << std::endl;
-
+    std::string linhaJogador = sLinha2.str();
+    std::cout << "linha2 : (" << linhaJogador << ")" << std::endl;
+    
 
     while (getline(_jogadoresCSV, linha)){
-
 
        // std::cout << "linha : (" << linha << ")" << std::endl;
         temp.leJogador(linha);
         if ((temp < jogador || temp == jogador) && !escrito){
-            jogadorTemp << sLinha2.str();
+            jogadorTemp << linhaJogador << std::endl;
+            std::cout << "JogadorTemp recebe (" << linhaJogador << ")" <<  std::endl;
             escrito = true;
             //std::cout << sLinha2.str();
         }
-            jogadorTemp << linha;
+        if (linha != linhaJogador){
+            jogadorTemp << linha << std::endl;
+            std::cout << "JogadorTemp recebe (" << linha << ")" << std::endl;
+            //std::cout << "Comparando (" << linha << ") com (" << linhaJogador << ") " << std::endl;
             //std::cout << linha;
-
+        }
     }
 
 
     _jogadoresCSV.close();
 
-    _jogadoresCSV.open(_stringJogadores, std::ios::in);
+    _jogadoresCSV.open(_stringJogadores, std::ios::out);
 
+    jogadorTemp.close();
+    jogadorTemp.open("jogadores_temp.csv", std::ios::in);
+    
     jogadorTemp.seekg(0, std::ios_base::beg);
 
     while (getline(jogadorTemp, linha))
     {
-        _jogadoresCSV << linha;
+        _jogadoresCSV << linha <<std::endl;
         // std::cout << "_jogadoresCSV recebeu: " << linha << std::endl;
     }
 
@@ -683,14 +693,11 @@ int Partida::fazerPerguntas(int N, int File)
     std::cout << "Sua pontuacao nessa partida foi de " << score << " pontos!" << std::endl;
     if (get_scores()[chave] < score){
         jogador.set_score(chave, score);
-        alterarJogador(jogador, "geral", score);
-        //std::cout << "AJUSTE" << std::endl;
         for (const auto& nota : get_scores()) {
             scoreGeral += nota.second;
         }
         jogador.set_score("geral", scoreGeral);
-        alterarJogador(jogador, "geral", scoreGeral);
-
+        alterarJogador(jogador, chave, score);
     }
 
     return score;
@@ -807,6 +814,7 @@ bool Jogo::Login(Jogador& jogador)
         std::cout << std::endl;
 
         linha = arquivo.encontrarJogador(nick,senha);
+        std:: cout << "Linha retornada em encontrarJogador: " << linha <<std::endl;
 
         if (linha.empty()){
             valido = false;
@@ -815,10 +823,10 @@ bool Jogo::Login(Jogador& jogador)
     }
 
     jogador.leJogador(linha);
-    std::cout << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
+    std::cout << "Jogador dentro do Login: " << jogador.get_Id() << "," << jogador.get_Senha() << "," <<
     jogador.get_scoregeral() << "," << jogador.get_scores()["mat_facil"] <<
     ","<< jogador.get_scores()["mat_dificil"] << "," 
-    << "," << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
+    << jogador.get_scores()["humanas_facil"]<< "," << jogador.get_scores()["humanas_dificil"]
     << "," << jogador.get_scores()["bio_facil"]<< "," << jogador.get_scores()["bio_dificil"]
     << "," << jogador.get_scores()["lp_facil"]<< "," << jogador.get_scores()["lp_dificil"] << std::endl;
     return true;
