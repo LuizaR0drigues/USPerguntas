@@ -101,6 +101,7 @@ public:
     /* Essa função altera o score "scoreType" do jogador dado por "nome", no
     caso em que o score fornecido é maior que o atual */
     std::string encontrarJogador(std::string nome, std::string senha);
+    std::vector <std::string> listaRanking();
     
     // Getters:
     std::fstream& getPerguntasCSV() {
@@ -148,12 +149,13 @@ class Jogo {
         ArquivosCSV _arquivo;
 
     public:
+        Jogo();
         void descricaoInicial();
         void criarUsuario();
         bool Login(Jogador& jogador);
         int iniciarPartida(int cntPartida);
         int menu();
-        Jogo();
+        void ranking();
 };
 
 #endif

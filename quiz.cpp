@@ -552,6 +552,40 @@ bool ArquivosCSV::alterarJogador(Jogador& jogador, std::string scoreType, int sc
     return false;
 }
 
+std::vector<std::string> ArquivosCSV::listaRanking(){
+
+std::vector<std::string> nomesRanking(4);
+std::string nome;
+std::stringstream sNome;
+
+    _jogadoresCSV.close();
+
+    if(getStringJogadores().empty()){
+
+        std::cout << "Não há um arguivo definido para jogadores." << std::endl;
+        return nomesRanking;
+    }
+
+    _jogadoresCSV.open(_stringJogadores, std::ios::in);
+ 
+    if (!_jogadoresCSV.is_open())
+    {
+        std::cout << "O arquivo de jogadores não pode ser aberto" << std::endl;
+        return nomesRanking;
+    }
+
+    int i = 0;
+
+    while( getline(_jogadoresCSV, nome) && i < 4){
+        sNome.str(nome);
+        getline(sNome,nome,',');
+        nomesRanking[i] = nome;
+        std::cout << (i + 1) << " lugar: " << nomesRanking[i] << std::endl;
+        i++;
+    }
+    return nomesRanking;
+}
+
 // Classe partida
 std::string Partida::setFile(int N)
 {
@@ -898,4 +932,16 @@ int Jogo::iniciarPartida(int cnt)
     }
 
     return std::stoi(area);
+}
+
+void Jogo::ranking()
+{
+
+    std::string area;
+
+    std::cout << " *******************************************************\n";
+    std::cout << "                      Ranking! \n";
+    std::cout << " ********************************************************\n";
+
+    return ;
 }

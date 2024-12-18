@@ -38,11 +38,12 @@ int main(){
             break;
 
             case 3:
+            jogo.ranking();
+            partida.listaRanking();
             caso = jogo.menu();
             break;
 
             case 4:
-            jogo.ranking();
             return 0;
         }
     }
