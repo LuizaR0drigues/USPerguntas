@@ -1,5 +1,7 @@
 #include "quiz.h"
 #include "sstream"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 // CLASSE JOGADOR E SUAS FUNÇÔES
 // construtor
@@ -733,20 +735,17 @@ Jogo::Jogo() : _arquivo("", "jogadores.csv")
 {
 }
 
-void Jogo::descricaoInicial()
+std::string Jogo::descricaoInicial()
 {
 
-    std::cout << " *******************************************************\n";
-    std::cout << "                         USPerguntas             \n";
-    std::cout << " ********************************************************\n";
-
-    std::cout << "O USPergunta é um jogo baseado no Jogo do Milhão, porém voltado para alunos do ensino médio\n";
-    std::cout << "Há questões de 4 áreas do conhecimento e 2 níveis de dificuldades: \n"
-              << " *mat_facil - mat_dificil\n"
-              << " *humanas_facil - humanas_dificil\n"
-              << " *bio_facil - bio_dificil\n"
-              << " *lp_facil - lp_dificil\n"
-              << std::endl;
+    texto +=  "O USPergunta eh um jogo baseado no \nJogo do Milhao, voltado para alunos \ndo ensino medio.\n";
+    texto += "Ha questoes de 4 areas do conhecimento \ne 2 niveis de dificuldades: \n";
+    texto +=        "   *mat_facil - mat_dificil\n";
+    texto +=         "  *humanas_facil - humanas_dificil\n";
+    texto +=        "   *bio_facil - bio_dificil\n";
+    texto +=        "   *lp_facil - lp_dificil\n";
+        return texto;
+             
 }
 
 int Jogo::menu()
@@ -830,4 +829,242 @@ int Jogo::iniciarPartida(int cnt)
     }
 
     return std::stoi(area);
+}
+
+//Classe INTERFACE
+Interface::Interface()
+{
+    window = new sf::RenderWindow();
+    winclose = new sf::RectangleShape();
+    font = new sf::Font();
+    image = new sf::Texture();
+    bg = new sf::Sprite();
+
+    if (!font->loadFromFile("./Lora.ttf"))
+    {
+        std::cerr << "Erro ao carregar a fonte!" << std::endl;
+    }
+
+    if (!image->loadFromFile("./5.png"))
+    {
+        std::cerr << "Erro ao carregar a imagem!" << std::endl;
+    }
+
+    bg->setTexture(*image);
+}
+
+Interface::~Interface()
+{
+    delete window;
+    delete winclose;
+    delete font;
+    delete image;
+    delete bg;
+}
+
+void Interface::set_menu()
+{
+    window->create(sf::VideoMode(1080, 1080), "USPerguntas", sf::Style::Titlebar | sf::Style::Close);
+    window->setPosition(sf::Vector2i(0, 0));
+
+    pos = 0;
+    press = theselct = false;
+    
+    bg->setTexture(*image);
+
+    // posic_mouse = {{282,817}, {286,814}, {286,811},{286,811}};
+    posic_mouse = {0, 0};
+    mouse_coord = {0, 0};
+
+    options = {"Criar Conta", "Iniciar", "Ranking", "Exit"};
+    float centerX = window->getSize().x / 2;
+    float centerY = window->getSize().y / 2;
+    coords = {{450,385},{485,540},{460,688},{485,845}};
+    sizes = {40, 40, 40, 50};
+    texts.resize(4);
+
+   
+    for (std::size_t i{}; i < texts.size(); i++)
+    {
+        texts[i].setFont(*font);
+        texts[i].setString(options[i]);
+        texts[i].setCharacterSize(sizes[i]);
+        texts[i].setOutlineColor(sf::Color::White);
+        texts[i].setPosition(coords[i]);
+    } 
+
+    texts[0].setFillColor(sf::Color(255, 0, 255)); // Cor magenta para o texto selecionado
+    texts[0].setOutlineThickness(4);
+    pos = 0;
+}
+
+void Interface::set_textos(std::string pathimage, std::vector<const char *> aux_options,std::vector<sf::Vector2f> auxcoords)
+{
+    window->create(sf::VideoMode(1080, 1080), "USPerguntas", sf::Style::Titlebar | sf::Style::Close);
+    window->setPosition(sf::Vector2i(0, 0));
+
+    pos = 0;
+    press = theselct = false;
+
+    if (!image->loadFromFile(pathimage))
+    {
+        std::cerr << "Erro ao carregar a imagem!" << std::endl;
+    }
+
+    bg->setTexture(*image);
+
+    // posic_mouse = {{282,817}, {286,814}, {286,811},{286,811}};
+    posic_mouse = {0, 0};
+    mouse_coord = {0, 0};
+
+    options = aux_options;
+    coords = auxcoords;
+    texts.resize(options.size());
+    // Calcular o centro da janela
+    for (std::size_t i{}; i < texts.size(); i++)
+    {
+        texts[i].setFont(*font);
+        texts[i].setString(options[i]);
+        texts[i].setCharacterSize(25);
+        texts[i].setOutlineColor(sf::Color::White);
+        texts[i].setPosition(coords[i]);
+    } 
+}
+void Interface::set_init(){
+
+    window->create(sf::VideoMode(1017, 1017), "USPerguntas", sf::Style::Titlebar | sf::Style::Close);
+    window->setPosition(sf::Vector2i(0, 0));
+
+    pos = 0;
+    press = theselct = false;
+
+    bg->setTexture(*image);
+
+    // posic_mouse = {{282,817}, {286,814}, {286,811},{286,811}};
+    posic_mouse = {0, 0};
+    mouse_coord = {0, 0};
+
+}
+
+void Interface::set_Home()
+{
+   // Configurações específicas para a tela inicial
+    if (!image->loadFromFile("./5.png"))
+    {
+        std::cerr << "Erro ao carregar a imagem de fundo para Home!" << std::endl;
+    }
+
+    bg->setTexture(*image);
+    std::string descricao = descricaoInicial();
+    texts.clear();
+
+    sf::Text textoDescricao;
+    textoDescricao.setFont(*font);
+    textoDescricao.setString(descricao);
+    textoDescricao.setCharacterSize(30);
+    textoDescricao.setFillColor(sf::Color::White);
+    textoDescricao.setPosition(264, 350);
+
+    texts.push_back(textoDescricao);
+}
+
+
+void Interface::loop_events()
+{
+    sf::Event event;
+
+    while (window->pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+        {
+            window->close();
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !press)
+        {
+            if (pos < 3) // Garantir que não ultrapasse as opções
+            {
+                // Resetar a cor do texto anterior para a cor padrão (branca)
+                texts[pos].setFillColor(sf::Color::White); // Cor padrão
+
+                ++pos;
+                press = true; // Indica que a navegação está em andamento
+                texts[pos].setOutlineThickness(4); // Destaca a nova opção
+                texts[pos].setFillColor(sf::Color(255, 0, 255)); // Cor magenta para o texto selecionado
+                texts[pos - 1].setOutlineThickness(0); // Remove o destaque da opção anterior
+                press = false;
+                theselct = false;
+            }
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !press) // Permite navegar para cima
+        {
+            if (pos > 0)
+            {
+                // Resetar a cor do texto anterior para a cor padrão
+                texts[pos].setFillColor(sf::Color::White); // Cor padrão
+
+                --pos;
+                press = true;
+                texts[pos].setOutlineThickness(4);
+                texts[pos].setFillColor(sf::Color(255, 0, 255)); // Cor magenta para o texto selecionado
+                texts[pos + 1].setOutlineThickness(0);
+                press = false;
+                theselct = false;
+            }
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && !theselct)
+        {
+            theselct = true;
+            switch (pos)
+            {
+            case 0:
+                // Criar Conta
+                break;
+            case 1:
+                // Iniciar
+                break;
+            case 2:
+                // Ranking
+                break;
+            case 3:
+                window->close();
+                break;
+            default:
+                break;
+            }
+            
+        }
+    }
+}
+void Interface::draw_all()
+{
+    window->clear();
+    window->draw(*bg);
+    for (auto &t : texts)
+    {
+        window->draw(t);
+    }
+
+    window->display();
+}
+
+void Interface::run_Interface()
+{
+    set_init();  // Configuração geral
+    set_Home();  // Configuração inicial específica para Home
+    
+    //quando pressionar enter, troca para o menu
+    theselct = false;
+
+    //verifica os proximos eventos
+    while (window->isOpen())
+    {
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && !theselct){
+            set_menu();
+            theselct = true;
+        }
+        loop_events();
+        draw_all();
+        
+    }
 }

@@ -10,6 +10,8 @@
 #include <map>
 #include <fstream>
 #include <vector>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 //classe responsavel por identificar e armazenar informacoes sobre o jogador
 //tambem realizara a autentificacao
@@ -140,13 +142,50 @@ class Jogo {
     private:
         std::string _nick, _senha;
         ArquivosCSV _arquivo;
+        std::string texto;
 
     public:
-        void descricaoInicial();
+        std::string descricaoInicial();
         void criarUsuario();
         int iniciarPartida(int cntPartida);
         int menu();
         Jogo();
+};
+
+//Interface
+class Interface : private Partida, private Jogo
+{
+private:
+    int pos;
+    bool press, theselct;
+    sf::RenderWindow *window;
+    sf::RectangleShape *winclose;
+    sf::Font *font;
+    sf::Texture *image;
+    sf::Sprite *bg;
+    std::string descricao;
+
+    sf::Vector2i posic_mouse;
+    sf::Vector2f mouse_coord;
+
+    std::vector<const char *> options;
+    std::vector<sf::Vector2f> coords;
+    std::vector<sf::Text> texts;
+    std::vector<std::size_t> sizes;
+
+protected:
+    void loop_events();
+    void draw_all();
+
+public:
+    Interface();
+    ~Interface();
+    void set_menu();
+    void set_textos(std::string pathimage, std::vector<const char *> aux_options,std::vector<sf::Vector2f> auxcoords);
+    void set_Home();
+    void set_init();
+    void run_Interface();
+
 };
 
 #endif

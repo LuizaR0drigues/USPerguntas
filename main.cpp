@@ -1,7 +1,11 @@
 #include "quiz.h"
 
 int main(){
-   
+     Interface *menu = new Interface();
+    menu->run_Interface();
+    delete menu;
+    
+   /*0
     Jogo jogo;
     Partida partida;
 
@@ -36,7 +40,7 @@ int main(){
             return 0;
         }
     }
-
+*/
 
 
     return 0;
