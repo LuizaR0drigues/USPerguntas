@@ -4,6 +4,7 @@ int main(){
    
     Jogo jogo;
     Partida partida;
+    Jogador jogador;
 
     jogo.descricaoInicial();
     int caso = jogo.menu();
@@ -20,7 +21,7 @@ int main(){
             break;
 
             case 2:
-            jogo.login();
+            jogo.Login(jogador);
             area = jogo.iniciarPartida(cntPartidas);
             partida.setFile(area);
             // *. Perguntar quantas perguntas fazer na partida
@@ -30,7 +31,6 @@ int main(){
             break;
 
             case 3:
-
             caso = jogo.menu();
             break;
 

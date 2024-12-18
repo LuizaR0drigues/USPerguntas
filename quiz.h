@@ -130,7 +130,7 @@ public:
 };
 
 
-class Partida: private Jogador, private Pergunta, public ArquivosCSV{
+class Partida: public Jogador, private Pergunta, public ArquivosCSV{
     private:
 
     public:

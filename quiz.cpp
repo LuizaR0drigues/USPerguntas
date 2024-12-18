@@ -273,60 +273,30 @@ bool Pergunta::verifica_texto()
 bool Pergunta::verifica_alternativa()
 {
     // declaracao e requisicao da resposta do jogador
-    char escolha;
+    char escolha, resposta;
+    resposta = get_resposta();
     std::cin >> escolha;
 
+    std::cout << "A resposta esperada era " << resposta << std::endl;
+
     // verificao da alternativa correta
-    switch (escolha)
-    {
-    case 'a':
-    case 'A':
-        if (escolha == get_resposta())
-        {
-            std::cout << "PARABENS! RESPOSTA CORRETA! +1 ponto\n";
-        }
-        else
-        {
-            std::cout << "Resposta Incorreta!\n"
-                      << std::endl;
-        }
-        return true;
-    case 'b':
-    case 'B':
-        if (escolha == get_resposta())
-        {
-            std::cout << "PARABENS! RESPOSTA CORRETA! +1 ponto\n";
-        }
-        else
-        {
-            std::cout << "Resposta Incorreta!\n"
-                      << std::endl;
-        }
-        return true;
-    case 'c':
-    case 'C':
-        if (escolha == get_resposta())
-        {
-            std::cout << "PARABENS! RESPOSTA CORRETA! +1 ponto\n";
-        }
-        else
-        {
-            std::cout << "Resposta Incorreta!\n"
-                      << std::endl;
-        }
-        return true;
-    case 'd':
-    case 'D':
-        if (escolha == get_resposta())
+
+    switch (escolha){
+    
+    case 'A': case 'a': case 'B': case 'b': case 'C': case 'c': case 'D': case 'd':
+
+        if (escolha == resposta || escolha == tolower(resposta))
         {
             std::cout << "PARABENS! RESPOSTA CORRETA! +1 ponto \n";
+            return true;
         }
         else
         {
             std::cout << "Resposta Incorreta!\n"
                       << std::endl;
+            std::cout << "A resposta esperada era " << resposta << std::endl;
+            return false;
         }
-        return true;
     default:
 
         std::cout << "Alternativa nao reconhecida, tente novamente.\n";
@@ -340,7 +310,7 @@ bool Pergunta::verifica_alternativa()
 
 ArquivosCSV::ArquivosCSV()
 {
-    _stringJogadores = "";
+    _stringJogadores = "jogadores.csv";
     _stringPerguntas = "";
 }
 
@@ -801,6 +771,7 @@ bool Jogo::Login(Jogador& jogador)
     ArquivosCSV arquivo;
     std::string nick, senha;
     bool valido = false;
+    std::string linha;
 
     std::cout << " *******************************************************\n";
     std::cout << "                      Faça seu login:                   \n";
@@ -816,15 +787,16 @@ bool Jogo::Login(Jogador& jogador)
 
         std::cout << std::endl;
 
-        std::string linha = arquivo.encontrarJogador(nick,senha);
+        linha = arquivo.encontrarJogador(nick,senha);
 
         if (linha.empty()){
             valido = false;
-            std::cout << "Credenciais inválidas, tente novamente."
+            std::cout << "Credenciais inválidas, tente novamente.";
         }
     }
 
-
+    jogador.leJogador(linha);
+    return true;
 }
 
 int Jogo::iniciarPartida(int cnt)
