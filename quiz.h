@@ -10,6 +10,8 @@
 #include <map>
 #include <fstream>
 #include <vector>
+#include "sstream"
+#include <time.h>
 
 //classe responsavel por identificar e armazenar informacoes sobre o jogador
 //tambem realizara a autentificacao
@@ -95,7 +97,6 @@ public:
 
     void setPerguntas(std::string arquivo);
     void setJogadores(std::string arquivo);
-    //int fazerPerguntas(int N);
     bool adicionarJogador(std::string nome, std::string senha);
     bool alterarJogador(Jogador& jogador, std::string scoreType, int score);
     /* Essa função altera o score "scoreType" do jogador dado por "nome", no
@@ -137,7 +138,7 @@ class Partida: public Jogador, private Pergunta, public ArquivosCSV{
 
     public:
     Jogador jogador;
-    int fazerPerguntas(int n, int File);
+    int fazerPerguntas(int File);
     std::string setFile(int N);
     int setTipo();
 
