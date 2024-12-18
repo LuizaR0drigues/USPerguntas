@@ -161,8 +161,6 @@ private:
     sf::RenderWindow *window;
     sf::RectangleShape *winclose;
     sf::Font *font;
-    sf::Texture *image;
-    sf::Sprite *bg;
     std::string descricao;
 
     sf::Vector2i posic_mouse;
@@ -173,6 +171,8 @@ private:
     std::vector<sf::Text> texts;
     std::vector<std::size_t> sizes;
 
+    
+
 protected:
     void loop_events();
     void draw_all();
@@ -181,10 +181,10 @@ public:
     Interface();
     ~Interface();
     void set_menu();
-    void set_textos(std::string pathimage, std::vector<const char *> aux_options,std::vector<sf::Vector2f> auxcoords);
-    void set_Home();
     void set_init();
+    void set_retangulos(std::string& id, std::string& senha);
     void run_Interface();
+    void caixa_textoUser(); //recebe os valores escritos
 
 };
 

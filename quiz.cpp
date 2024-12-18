@@ -738,14 +738,13 @@ Jogo::Jogo() : _arquivo("", "jogadores.csv")
 std::string Jogo::descricaoInicial()
 {
 
-    texto +=  "O USPergunta eh um jogo baseado no \nJogo do Milhao, voltado para alunos \ndo ensino medio.\n";
+    texto += "O USPergunta eh um jogo baseado no \nJogo do Milhao, voltado para alunos \ndo ensino medio.\n";
     texto += "Ha questoes de 4 areas do conhecimento \ne 2 niveis de dificuldades: \n";
-    texto +=        "   *mat_facil - mat_dificil\n";
-    texto +=         "  *humanas_facil - humanas_dificil\n";
-    texto +=        "   *bio_facil - bio_dificil\n";
-    texto +=        "   *lp_facil - lp_dificil\n";
-        return texto;
-             
+    texto += "   *mat_facil - mat_dificil\n";
+    texto += "  *humanas_facil - humanas_dificil\n";
+    texto += "   *bio_facil - bio_dificil\n";
+    texto += "   *lp_facil - lp_dificil\n";
+    return texto;
 }
 
 int Jogo::menu()
@@ -831,143 +830,173 @@ int Jogo::iniciarPartida(int cnt)
     return std::stoi(area);
 }
 
-//Classe INTERFACE
+// Classe INTERFACE
+// construtor
 Interface::Interface()
 {
     window = new sf::RenderWindow();
     winclose = new sf::RectangleShape();
     font = new sf::Font();
-    image = new sf::Texture();
-    bg = new sf::Sprite();
 
     if (!font->loadFromFile("./Lora.ttf"))
     {
         std::cerr << "Erro ao carregar a fonte!" << std::endl;
     }
-
-    if (!image->loadFromFile("./5.png"))
-    {
-        std::cerr << "Erro ao carregar a imagem!" << std::endl;
-    }
-
-    bg->setTexture(*image);
 }
-
+// destrutor
 Interface::~Interface()
 {
     delete window;
     delete winclose;
     delete font;
-    delete image;
-    delete bg;
 }
-
-void Interface::set_menu()
+// configuração inicial
+void Interface::set_init()
 {
-    window->create(sf::VideoMode(1080, 1080), "USPerguntas", sf::Style::Titlebar | sf::Style::Close);
+
+    window->create(sf::VideoMode(512, 512), "USPerguntas", sf::Style::Titlebar | sf::Style::Close);
     window->setPosition(sf::Vector2i(0, 0));
 
     pos = 0;
     press = theselct = false;
-    
-    bg->setTexture(*image);
 
-    // posic_mouse = {{282,817}, {286,814}, {286,811},{286,811}};
-    posic_mouse = {0, 0};
-    mouse_coord = {0, 0};
+    window->clear();
+    window->display();
+}
+
+void Interface::set_retangulos(std::string& id, std::string& senha){
+    sf::Text inputId, inputSenha;
+    bool flagId = true; // Variável para alternar entre ID e Senha
+
+    // Limpa a janela
+    window->clear();
+
+    // Retângulo e texto para o ID
+    sf::RectangleShape rectangleId(sf::Vector2f(200.f, 50.f)); // Tamanho do retângulo para ID
+    rectangleId.setFillColor(sf::Color(255, 255, 255));        // Cor de preenchimento do retângulo (branco)
+    rectangleId.setOutlineThickness(2.f);                       // Espessura da borda
+    rectangleId.setOutlineColor(sf::Color(255, 0, 255));       // Cor da borda (magenta)
+    rectangleId.setPosition(176.f, 206.f);                      // Posição do retângulo na tela para ID
+
+    inputId.setFont(*font);                       // Usa a fonte carregada
+    inputId.setCharacterSize(30);                 // Tamanho do texto
+    inputId.setFillColor(sf::Color(255, 0, 255)); // Cor do texto (magenta)
+    inputId.setPosition(190.f, 210.f);            // Posição do texto "Id"
+    inputId.setString("Id: " + id);               // Atualiza o texto com o conteúdo de 'id'
+
+    // Retângulo e texto para a Senha
+    sf::RectangleShape rectangleSenha(sf::Vector2f(200.f, 50.f)); // Tamanho do retângulo para Senha
+    rectangleSenha.setFillColor(sf::Color(255, 255, 255));            // Cor de preenchimento do retângulo (cinza escuro)
+    rectangleSenha.setOutlineThickness(2.f);                       // Espessura da borda
+    rectangleSenha.setOutlineColor(sf::Color(255, 0, 255));       // Cor da borda (magenta)
+    rectangleSenha.setPosition(176.f, 400.f);                      // Posição do retângulo para senha
+
+    inputSenha.setFont(*font);                       // Usa a fonte carregada
+    inputSenha.setCharacterSize(30);                 // Tamanho do texto
+    inputSenha.setFillColor(sf::Color(255, 0, 255)); // Cor do texto (magenta)
+    inputSenha.setPosition(190.f, 404.f);            // Posição do texto "Senha"
+    inputSenha.setString("Senha: " + std::string(senha.length(), '*')); // Exibe os asteriscos para a senha
+
+    // Desenha os retângulos das caixas de texto
+    window->draw(rectangleId);
+    window->draw(rectangleSenha);
+
+    // Desenha os textos dentro das caixas de texto
+    window->draw(inputId);
+    window->draw(inputSenha);
+
+    // Exibe o conteúdo da janela
+    window->display();
+
+}
+
+void Interface::caixa_textoUser()
+{
+    std::string id, senha;
+    bool flagId = true; // Variável para alternar entre ID e Senha
+    bool enterPressed = false; 
+    // Limpa a janela
+    window->clear();
+
+    // Processa os eventos do teclado
+    sf::Event event;
+    while (window->pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+        {
+            window->close();
+        }
+
+        if (event.type == sf::Event::TextEntered)
+        {
+            if (flagId) // Se estiver editando o ID
+            {
+                if (event.text.unicode == 8) // Backspace (apagar)
+                {
+                    if (!id.empty())
+                        id.pop_back(); // Remove o último caractere
+                }
+                else if (event.text.unicode < 128) // Se for um caractere ASCII válido
+                {
+                    id += static_cast<char>(event.text.unicode); // Adiciona o caractere digitado ao ID
+                }
+            }
+            else // Se estiver editando a Senha
+            {
+                if (event.text.unicode == 8) // Backspace (apagar)
+                {
+                    if (!senha.empty())
+                        senha.pop_back(); // Remove o último caractere
+                }
+                else if (event.text.unicode < 128) // Se for um caractere ASCII válido
+                {
+                    senha += static_cast<char>(event.text.unicode); // Adiciona o caractere digitado à Senha
+                }
+                
+            }
+        }
+        
+    // Alterna entre o campo ID e Senha quando pressionar Enter
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
+        {
+            if (!enterPressed) // Verifica se a tecla Enter não foi pressionada recentemente
+            {
+                flagId = !flagId; // Troca entre ID e Senha
+                enterPressed = true; // Marca que a tecla Enter foi pressionada
+            }
+        }
+        
+        if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Enter)
+        {
+            enterPressed = false; // Reseta a variável quando a tecla Enter for liberada
+        }
+    }
+    set_retangulos(id, senha);
+}
+
+
+void Interface::set_menu()
+{
+    pos = 0;
+    press = theselct = false;
 
     options = {"Criar Conta", "Iniciar", "Ranking", "Exit"};
-    float centerX = window->getSize().x / 2;
-    float centerY = window->getSize().y / 2;
-    coords = {{450,385},{485,540},{460,688},{485,845}};
+    coords = {{156, 103}, {176, 206}, {176, 309}, {176, 412}};
     sizes = {40, 40, 40, 50};
     texts.resize(4);
 
-   
-    for (std::size_t i{}; i < texts.size(); i++)
+    for (std::size_t i = 0; i < texts.size(); ++i)
     {
         texts[i].setFont(*font);
         texts[i].setString(options[i]);
         texts[i].setCharacterSize(sizes[i]);
         texts[i].setOutlineColor(sf::Color::White);
         texts[i].setPosition(coords[i]);
-    } 
+    }
 
-    texts[0].setFillColor(sf::Color(255, 0, 255)); // Cor magenta para o texto selecionado
+    texts[0].setFillColor(sf::Color(255, 0, 255));
     texts[0].setOutlineThickness(4);
-    pos = 0;
 }
-
-void Interface::set_textos(std::string pathimage, std::vector<const char *> aux_options,std::vector<sf::Vector2f> auxcoords)
-{
-    window->create(sf::VideoMode(1080, 1080), "USPerguntas", sf::Style::Titlebar | sf::Style::Close);
-    window->setPosition(sf::Vector2i(0, 0));
-
-    pos = 0;
-    press = theselct = false;
-
-    if (!image->loadFromFile(pathimage))
-    {
-        std::cerr << "Erro ao carregar a imagem!" << std::endl;
-    }
-
-    bg->setTexture(*image);
-
-    // posic_mouse = {{282,817}, {286,814}, {286,811},{286,811}};
-    posic_mouse = {0, 0};
-    mouse_coord = {0, 0};
-
-    options = aux_options;
-    coords = auxcoords;
-    texts.resize(options.size());
-    // Calcular o centro da janela
-    for (std::size_t i{}; i < texts.size(); i++)
-    {
-        texts[i].setFont(*font);
-        texts[i].setString(options[i]);
-        texts[i].setCharacterSize(25);
-        texts[i].setOutlineColor(sf::Color::White);
-        texts[i].setPosition(coords[i]);
-    } 
-}
-void Interface::set_init(){
-
-    window->create(sf::VideoMode(1017, 1017), "USPerguntas", sf::Style::Titlebar | sf::Style::Close);
-    window->setPosition(sf::Vector2i(0, 0));
-
-    pos = 0;
-    press = theselct = false;
-
-    bg->setTexture(*image);
-
-    // posic_mouse = {{282,817}, {286,814}, {286,811},{286,811}};
-    posic_mouse = {0, 0};
-    mouse_coord = {0, 0};
-
-}
-
-void Interface::set_Home()
-{
-   // Configurações específicas para a tela inicial
-    if (!image->loadFromFile("./5.png"))
-    {
-        std::cerr << "Erro ao carregar a imagem de fundo para Home!" << std::endl;
-    }
-
-    bg->setTexture(*image);
-    std::string descricao = descricaoInicial();
-    texts.clear();
-
-    sf::Text textoDescricao;
-    textoDescricao.setFont(*font);
-    textoDescricao.setString(descricao);
-    textoDescricao.setCharacterSize(30);
-    textoDescricao.setFillColor(sf::Color::White);
-    textoDescricao.setPosition(264, 350);
-
-    texts.push_back(textoDescricao);
-}
-
 
 void Interface::loop_events()
 {
@@ -982,64 +1011,45 @@ void Interface::loop_events()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !press)
         {
-            if (pos < 3) // Garantir que não ultrapasse as opções
+            if (pos < 3)
             {
-                // Resetar a cor do texto anterior para a cor padrão (branca)
-                texts[pos].setFillColor(sf::Color::White); // Cor padrão
-
+                texts[pos].setFillColor(sf::Color::White);
                 ++pos;
-                press = true; // Indica que a navegação está em andamento
-                texts[pos].setOutlineThickness(4); // Destaca a nova opção
-                texts[pos].setFillColor(sf::Color(255, 0, 255)); // Cor magenta para o texto selecionado
-                texts[pos - 1].setOutlineThickness(0); // Remove o destaque da opção anterior
+                press = true;
+                texts[pos].setOutlineThickness(4);
+                texts[pos].setFillColor(sf::Color(255, 0, 255));
+                texts[pos - 1].setOutlineThickness(0);
                 press = false;
                 theselct = false;
             }
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !press) // Permite navegar para cima
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !press)
         {
             if (pos > 0)
             {
-                // Resetar a cor do texto anterior para a cor padrão
-                texts[pos].setFillColor(sf::Color::White); // Cor padrão
-
+                texts[pos].setFillColor(sf::Color::White);
                 --pos;
                 press = true;
                 texts[pos].setOutlineThickness(4);
-                texts[pos].setFillColor(sf::Color(255, 0, 255)); // Cor magenta para o texto selecionado
+                texts[pos].setFillColor(sf::Color(255, 0, 255));
                 texts[pos + 1].setOutlineThickness(0);
                 press = false;
                 theselct = false;
             }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && !theselct)
+
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
+            !sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            theselct = true;
-            switch (pos)
-            {
-            case 0:
-                // Criar Conta
-                break;
-            case 1:
-                // Iniciar
-                break;
-            case 2:
-                // Ranking
-                break;
-            case 3:
-                window->close();
-                break;
-            default:
-                break;
-            }
-            
+            press = false;
         }
     }
 }
+
 void Interface::draw_all()
 {
     window->clear();
-    window->draw(*bg);
+
     for (auto &t : texts)
     {
         window->draw(t);
@@ -1050,21 +1060,34 @@ void Interface::draw_all()
 
 void Interface::run_Interface()
 {
-    set_init();  // Configuração geral
-    set_Home();  // Configuração inicial específica para Home
-    
-    //quando pressionar enter, troca para o menu
-    theselct = false;
+    bool flagmenu = true; // Controla se o menu está ativo
+    set_init();           // Configuração geral
 
-    //verifica os proximos eventos
+    set_menu();
     while (window->isOpen())
     {
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && !theselct){
-            set_menu();
-            theselct = true;
+        sf::Event event;
+        while (window->pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
+                window->close();
+            }
+
+            // Lógica de navegação do menu
+            if (flagmenu)
+            {
+                loop_events(); // Processa eventos do menu
+                draw_all();    // Desenha o menu
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && pos == 0)
+                {
+                    flagmenu = false; // Muda para a tela de entrada de usuário
+                }
+            }
+            else
+            {
+                caixa_textoUser(); // Desenha a tela de entrada de usuário
+            }
         }
-        loop_events();
-        draw_all();
-        
     }
 }
