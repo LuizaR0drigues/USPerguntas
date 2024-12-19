@@ -12,5 +12,5 @@ O USPerguntas foi desenvolvido como parte das atividades da disciplina de **Prog
 O objetivo principal foi consolidar o aprendizado desses conceitos enquanto se desenvolvia uma ferramenta interativa e educativa.
 
 ## Execução
--executar o comando Make All e após isso o comando ./USPerguntas.
--executar o comando g++ -o USPerguntas main.cpp quiz.cpp  e após isso executar o comando ./USPerguntas
+- executar o comando **Make All** e após isso o comando  **./USPerguntas**.
+- executar o comando **g++ -o USPerguntas main.cpp quiz.cpp** e após isso executar o comando **./USPerguntas**
