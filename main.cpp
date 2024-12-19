@@ -25,10 +25,7 @@ int main(){
 
             area = jogo.iniciarPartida(cntPartidas);
             partida.setFile(area);
-            // *. Perguntar quantas perguntas fazer na partida
-            std::cout<< "Quantas perguntas voce gostaria de responder? \nObs: Máximo 10\n";
-            std::cin >>qtd;;
-            partida.fazerPerguntas(qtd, area);
+            partida.fazerPerguntas(area);
 
             caso = jogo.menu();
             break;

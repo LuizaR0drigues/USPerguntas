@@ -139,7 +139,7 @@ public:
 };
 
 
-class Partida: public Jogador, private Pergunta, public ArquivosCSV{
+class Partida: private Pergunta, public ArquivosCSV{
     private:
 
     public:

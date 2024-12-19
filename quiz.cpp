@@ -567,7 +567,7 @@ std::stringstream sNome;
 
     int i = 0;
 
-    while( getline(_jogadoresCSV, nome) && i < 4){
+    while( getline(_jogadoresCSV, nome)){
         sNome.str(nome);
         getline(sNome,nome,',');
         nomesRanking[i] = nome;
@@ -663,7 +663,7 @@ int Partida::fazerPerguntas(int File)
     // Gerar os indexadores para as perguntas aleatórias:
 
     std::cout << "Quantas perguntas deseja resolver? Selecione um valor de 1 a "
-    << numPerguntas << std::endl;
+    << numPerguntas << "." << std::endl;
 
     std::cin.exceptions(std::ios::failbit); 
     
